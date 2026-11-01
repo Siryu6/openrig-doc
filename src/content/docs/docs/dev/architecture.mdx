@@ -15,12 +15,36 @@ description: Threads, real-time rules, the OS image and updates.
   plays the main mix, a send or an input on each output. A new chain is crossfaded in over
   20 ms, its sends with it; the old one is dropped off the audio thread.
 
+## The chain on several cores
+
+`src/audio/dsp_pool.rs` keeps one DSP worker thread per core but the audio thread's (up to 7),
+started when first needed, with the scheduling class and priority of the JACK thread. The audio
+thread hands them jobs through lock-free slots and waits for them within the same period, so
+nothing is delayed by a period:
+
+- **Splits**: the two branches of a split run at once, one of them on a worker.
+- **Pipeline**: a long chain is cut into stages of about the same cost (from each block's measured
+  load). Each period is passed along in 8 slices: a stage starts a slice as soon as the stage
+  before has finished it. Every block still sees its samples in order, so the output is the same,
+  sample for sample, as on one core; a test checks it.
+- **Crossfade**: during a preset change, the old and the new chain run on two cores.
+
+Light chains stay on the audio thread, where handing work over would cost more than it saves; a
+block feeding a send bus stays there too. Settings → Processing sets the workers (Auto: all of
+them). `pedalboard-bench` (`src/bin/bench.rs`) times a rig of NAM blocks offline on 1 to 8 cores.
+
 ## Real-time rules
 
 The audio callback never allocates memory and never waits on a lock: it only uses `try_lock` and
 atomics. Model loading, file reading and plugin instantiation all happen on the builder thread.
 Long impulse responses are split: the first 170 ms are convolved in the callback, the rest on a
 worker thread with a deadline, so the callback's cost stays flat.
+
+A panic in the callback (a plugin gone wrong) is caught: the chain is dropped off the audio
+thread, the dry signal plays, and the builder makes the chain again. Outside tests, the code has
+no `unwrap` or `expect` (Clippy enforces it): presets, impulse responses, plugin data, the store
+index and archives are parsed without trusting them, and what cannot be read is skipped and
+logged. Logs go through `tracing`, to syslog on the image.
 
 Scenes, knobs and bypasses are commands applied to the running chain: no rebuild, so delays and
 reverbs ring on. Bypass uses a 10 ms ramp; delays and reverbs fade their input and let their
@@ -58,7 +82,7 @@ never configured per plugin.
 
 A [Buildroot](https://buildroot.org) image with BusyBox init, no systemd and no desktop:
 
-- a `PREEMPT_RT` kernel (Raspberry Pi 6.12, or mainline 6.12 on x86_64);
+- a `PREEMPT_RT` kernel (Raspberry Pi 6.18, or mainline 6.18 LTS on x86_64, built for x86-64-v3);
 - **jackd** at real-time priority 80 on the audio interface, waiting for one if none is plugged;
 - **the UI** full screen on DRM/KMS, without X11 or Wayland, restarted with the audio;
 - NetworkManager, chrony and dropbear, and nothing else.
@@ -86,7 +110,7 @@ service to install it; RAUC checks the signature.
 
 ```
 src/
-├── audio/        JACK callback, chain switcher, tuner, looper, output routing
+├── audio/        JACK callback, chain switcher, DSP worker pool, tuner, looper, output routing
 ├── plugins/      lilv host, LV2 features, NAM, impulse responses, small DSP blocks,
 │                 view inference and models (view_infer, eq_curve, dynamics, scope)
 ├── state/        AppState: chain, presets, scenes, setlists, session
@@ -97,6 +121,7 @@ src/
 ├── plugin_view.rs, block_sound.rs, eq_ui.rs, dynamics_ui.rs, scope_ui.rs
 │                 Plugin views: shared drawing, the sound of the block shown, each view
 └── …_ui.rs       Glue between each Settings card or page and the UI
+├── bin/          pedalboard-splash (boot logo), pedalboard-bench (multi-core timing)
 ui/               Slint UI: pages, components, theme
 native/           C wrapper around NeuralAudio
 os/               Buildroot tree: boards, packages, init scripts, RAUC

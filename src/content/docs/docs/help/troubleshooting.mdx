@@ -23,14 +23,16 @@ signal" message for a moment: that is normal.
 
 ## Screen upside down or sideways
 
-Set `display_rotation` to 90, 180 or 270 in [pedalboard.txt](../../setup/pedalboard-txt/).
+Set **Screen rotation** in **Settings → [Audio & system](../../setup/settings/#audio--system)**,
+or `display_rotation` to 90, 180 or 270 in [pedalboard.txt](../../setup/pedalboard-txt/).
 
 ## No sound
 
 1. Check that the **IN** meter moves when you play. If it does not, the guitar is not reaching
    the pedalboard: check the cable and the interface's input gain.
-2. Over [SSH](../ssh/), `cat /proc/asound/cards` lists the interfaces the system sees. Set
-   `audio_device` in `pedalboard.txt` to the name in brackets of yours.
+2. In **Settings → Audio & system**, step **Interface** through the sound cards the system sees
+   and pick yours. Over [SSH](../ssh/), `cat /proc/asound/cards` lists them too: `audio_device` in
+   `pedalboard.txt` takes the name in brackets.
 3. `tail -f /var/log/messages` shows why the audio server does not start.
 
 Without an interface, the audio server waits for one: plugging it in later works.
@@ -60,10 +62,25 @@ Use that supply, or a powered USB hub.
 
 See [Performance](../../setup/performance/#if-you-hear-clicks).
 
+## A block went silent for a moment
+
+If a plugin crashes while processing the sound, OpenRig catches it: the dry signal plays while
+the chain is built again, so the sound comes back by itself. If it keeps failing, the screen
+says so and the dry signal plays until your next change: remove the last block you added, or load
+another preset. `grep -E "ERROR|WARN" /var/log/messages` shows what happened; send it with an
+[issue](https://github.com/Siryu6/OpenRig/issues).
+
 ## The tone sounds wrong with a capture
 
 Neural captures are trained at 48 kHz. Check that `sample_rate=48000` in `pedalboard.txt`.
 Try **Normalize** on the block, and set **Input** so the capture is driven as intended.
+
+## The mini PC does not start the image
+
+The x86_64 image needs a CPU with AVX2 (Intel Haswell or newer, N100 included; AMD Excavator,
+Zen). On a Celeron or Pentium without it, such as a J4125 or N4020, it stops right after the boot
+loader. Check with `grep -o avx2 /proc/cpuinfo` from any Linux on that PC: see
+[What you need](../../getting-started/hardware/#x86_64-mini-pc).
 
 ## A plugin does not show in Add effect
 

@@ -1,10 +1,14 @@
 ---
 title: pedalboard.txt
-description: Audio interface, buffer, screen rotation and Wi-Fi country, set from any computer.
+description: Audio interface, buffer, screen rotation and Wi-Fi country, set from the screen or from any computer.
 ---
 
 The first partition of the card (or disk) is a small FAT partition named `PEDALBOARD`, readable
-from any computer. It holds `pedalboard.txt`, read at every boot:
+from any computer. It holds `pedalboard.txt`, read at every boot.
+
+These settings can also be changed on the pedalboard itself, in
+**Settings → [Audio & system](../settings/#audio--system)**, which writes this file. Editing it
+from a computer is the way back if a setting leaves the pedalboard without sound or picture.
 
 ```ini
 # Audio interface: "auto" (the first USB interface or sound HAT), or a card
@@ -32,7 +36,7 @@ wifi_country=
 | `display_rotation` | `0` | 0, 90, 180 or 270 |
 | `wifi_country` | empty | Two letters (`FR`, `US`…) |
 
-Restart after editing. Keys are lowercase and values plain (letters, digits, `_ . : , -`):
+After editing it from a computer, restart. Keys are lowercase and values plain (letters, digits, `_ . : , -`):
 anything else is ignored and the default is used.
 
 ## Other files on that partition

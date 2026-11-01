@@ -9,23 +9,27 @@ import { CardGrid, LinkCard } from '@astrojs/starlight/components';
 import Version from '../../../components/Version.astro';
 
 OpenRig is a guitar multi-effects pedalboard that you assemble from standard parts: a
-Raspberry Pi 5 (or an x86_64 mini PC), a USB audio interface and a touchscreen. It ships as a
+Raspberry Pi 5 (or an x86_64 mini PC with an AVX2 CPU), a USB audio interface and a touchscreen. It ships as a
 small operating system that boots straight into the pedalboard: no desktop, no login, no
 computer needed once the card is written.
 
-<Shot src={rack} alt="The OpenRig rack: an overdrive, an amp, a cabinet and a hall reverb in series, then a chorus and a second amp in parallel" caption="The rack: the whole signal chain on one screen." />
+<Shot src={rack} alt="The OpenRig rack: a pedal, an amp and a cabinet in series, then a chorus and a phaser in parallel, a hall reverb and a doubler" caption="The rack: the whole signal chain on one screen." />
 
 ## What it does
 
 - **Amps, pedals and cabinets** from [Neural Amp Modeler](https://www.neuralampmodeler.com)
   captures and impulse responses, as built-in blocks.
-- **LV2 effects**: LV2 plugins built for the board (ZAM, x42, Calf, LSP, CAPS…).
+- **Multi-core DSP**: a heavy rig is spread over all four Cortex-A76 cores of the Pi 5, split
+  branches and pipeline stages each on their core, with no added latency and the same sound.
+- **LV2 effects**: LV2 plugins built for the board (ZAM, x42, Calf, LSP, CAPS…), and a store to
+  install more from the screen.
 - **TONE3000**: browse and download captures from [tone3000.com](https://www.tone3000.com)
   on the pedalboard itself.
 - **Live**: presets with 8 scenes each, setlists, a stomp mode, tap tempo, a tuner and a
   looper, played from the screen, footswitches or MIDI.
 - **An appliance**: a read-only system with a real-time kernel and signed updates that roll
-  back if something goes wrong.
+  back if something goes wrong. Audio interface, buffer and screen rotation are set from the
+  screen, and a plugin that crashes is caught while the dry signal plays on.
 
 ## Where to start
 

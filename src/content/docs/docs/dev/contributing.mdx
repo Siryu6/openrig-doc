@@ -34,6 +34,30 @@ aarch64, the OS images and the signed updates, and attaches them to the release.
 Code that runs in the audio callback must not allocate, lock (other than `try_lock`), log or do
 I/O. When in doubt, do the work on the chain builder thread and send the result.
 
+## Errors and logs
+
+The app must not crash at runtime, and Clippy enforces it (tests are exempt):
+
+- no `unwrap`, `expect`, `panic!` or `todo!`: return a `Result` (`anyhow` in the app, `thiserror`
+  where callers match on the error), or handle the case with a default, an early return or a
+  skipped item, logged when something was lost;
+- no indexing or slicing that can go out of bounds on data from outside (files, plugins, the
+  network, the user): `get`, `split_first`, iterators;
+- locks through `crate::sync::MutexExt::locked()` and its siblings, so a panic elsewhere does not
+  poison the rest of the app;
+- `unsafe` only where there is no safe way (LV2, JACK, NAM, libc, the hand-off to the DSP
+  workers), each block with a `// SAFETY:` comment.
+
+Logs go through `tracing`: syslog on the OS image, the terminal on a desktop. A message is a short
+sentence with what varies in fields:
+
+```rust
+warn!(path = %path.display(), error = %e, "Preset skipped");
+```
+
+`error` when a feature is lost, `warn` when something was worked around, `info` for lifecycle and
+configuration, `debug` for developers (`RUST_LOG=debug`). Never on the audio thread.
+
 ## License
 
 OpenRig is GPL-3.0-or-later. By contributing, you agree to license your contribution under the
