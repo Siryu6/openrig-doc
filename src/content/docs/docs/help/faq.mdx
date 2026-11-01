@@ -17,8 +17,33 @@ own.
 ## How many blocks can it run?
 
 It depends on the blocks. A full A2 neural capture uses about 12 % of one Raspberry Pi 5 core at
-128 frames, and its Light quality about a quarter of that. The top bar shows the load as you
-build: see [Performance](../../setup/performance/).
+128 frames, and its Light quality about a quarter of that. Since 0.10.0 a heavy rig is spread over
+all four cores of the Pi 5: split branches play on their own cores and long chains are cut into
+stages, with no added latency. The top bar shows the load as you build: see
+[Performance](../../setup/performance/).
+
+## Does it use all the cores of the Pi 5?
+
+Yes, since 0.10.0. The four Cortex-A76 cores share a heavy rig; on an x86_64 test machine with 4
+cores, 8 neural captures in series went from 935 to 417 µs per period. **Settings → Processing**
+sets how many cores the effects may use (Auto by default). See
+[Multi-core DSP](../../setup/performance/#multi-core-dsp).
+
+## Which mini PC can I use?
+
+One that boots in UEFI, has Intel graphics and a CPU with **AVX2**: an Intel N100 or a Core i from
+Haswell (2013) on, for instance. Celerons and Pentiums such as the J4125 or N4020 lack AVX2 and
+cannot start the x86_64 image. `grep -o avx2 /proc/cpuinfo` tells. See
+[What you need](../../getting-started/hardware/#x86_64-mini-pc).
+
+## What if a plugin crashes?
+
+The pedalboard keeps playing. A plugin that crashes while processing the sound is caught: the dry
+signal plays on while the chain is built again, and the log says what happened. If the chain
+keeps failing, the dry signal stays until your next change (removing the block, loading another
+preset). Broken
+presets, impulse responses, plugin bundles or downloads are skipped with a line in the log
+instead of stopping the app.
 
 ## Do I need a TONE3000 account?
 

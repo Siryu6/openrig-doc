@@ -25,7 +25,15 @@ cat /etc/pedalboard-release   # version of the image
 pedalboard-update status      # system slots and the last update
 ```
 
-Logs are kept in memory: they start again at each boot.
+Logs are kept in memory: they start again at each boot. The app writes to syslog one line per
+event, with what varies as `name=value` fields, for instance
+`WARN ... Preset skipped path=/data/pedalboard/presets/old.json error=...`. Errors mean a feature
+is lost (no audio, a save failed), warnings that something was worked around (a file skipped, a
+retry):
+
+```bash
+grep -E "ERROR|WARN" /var/log/messages   # what went wrong since boot
+```
 
 `pedalboard-report` prints everything useful for a bug report in one go: versions and system
 slots, the settings in effect, the sound cards and how the audio server opened them, their mixer

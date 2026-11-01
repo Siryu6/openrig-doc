@@ -1,12 +1,27 @@
 ---
 title: Install on a mini PC
-description: Run OpenRig on an x86_64 mini PC with UEFI and Intel graphics.
+description: Run OpenRig on an x86_64 mini PC with UEFI, Intel graphics and an AVX2 CPU.
 ---
 
 import { Steps } from '@astrojs/starlight/components';
 
 OpenRig also runs on x86_64 PCs that boot in UEFI mode and have Intel graphics: an Intel N100
 mini PC, a Lenovo ThinkCentre Tiny and the like.
+
+:::danger[Check the CPU first: AVX2 is required]
+Since 0.10.0 the image is built for **x86-64-v3**: the CPU needs **AVX2 and FMA**. Intel from
+Haswell (2013) on, the N100 included, and AMD from Excavator and Zen on have them. Celerons and
+Pentiums without AVX2 (J4125, N4020, N5105, J3455…) cannot start the image. From any Linux on that
+PC (a live USB stick will do):
+
+```bash
+grep -o avx2 /proc/cpuinfo | head -1
+```
+
+It prints `avx2` if the CPU can run OpenRig, nothing otherwise. In exchange, the neural amp
+models run about 1.8 times faster than with the older instruction set. More in
+[What you need](../hardware/#x86_64-mini-pc).
+:::
 
 :::caution
 The x86_64 image is tested in QEMU only so far. AMD graphics are not supported yet.

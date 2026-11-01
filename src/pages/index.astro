@@ -10,6 +10,7 @@ import tuner from '../assets/shots/tuner.png';
 import looper from '../assets/shots/looper.png';
 import monitor from '../assets/shots/monitor.png';
 import addEffect from '../assets/shots/add-effect.png';
+import settingsSystem from '../assets/shots/settings-system.png';
 import setlists from '../assets/shots/setlists.png';
 
 const version = await latestVersion();
@@ -20,7 +21,7 @@ const docs = (path = '') => `${base}/docs/${path}`;
 
 <SiteLayout
 	title="OpenRig — open source guitar pedalboard"
-	description="OpenRig turns a Raspberry Pi 5 and a touchscreen into a guitar multi-effects pedalboard: neural amp captures, impulse responses, LV2 effects, scenes, setlists and MIDI. Free software, GPL-3.0."
+	description="OpenRig turns a Raspberry Pi 5 and a touchscreen into a guitar multi-effects pedalboard: neural amp captures, impulse responses, LV2 effects on all four cores, scenes, setlists and MIDI. Free software, GPL-3.0."
 >
 	<section class="hero">
 		<div class="wrap">
@@ -29,8 +30,8 @@ const docs = (path = '') => `${base}/docs/${path}`;
 				<h1>The open source pedalboard <em>you build yourself</em></h1>
 				<p class="lede">
 					OpenRig turns a Raspberry Pi 5, a USB audio interface and a touchscreen into a guitar
-					multi-effects unit. Neural amp captures, impulse responses and LV2 effects, on a system
-					that boots straight to the rack.
+					multi-effects unit. Neural amp captures, impulse responses and LV2 effects, spread over all
+					four cores of the Pi, on a system that boots straight to the rack.
 				</p>
 				<div class="ctas">
 					<a class="btn btn-primary" href={docs()} data-umami-event="get-started" data-umami-event-location="hero">Get started</a>
@@ -51,7 +52,7 @@ const docs = (path = '') => `${base}/docs/${path}`;
 		<div class="wrap">
 			<ul>
 				<li><b>~5 ms</b><span>buffer each way: 128 frames × 2 at 48 kHz on a Pi 5</span></li>
-				<li><b>0</b><span>allocations or blocking locks in the audio callback</span></li>
+				<li><b>4 cores</b><span>share a heavy rig on a Pi 5, with no added latency</span></li>
 				<li><b>8 scenes</b><span>per preset, recalled without rebuilding the chain</span></li>
 				<li><b>A/B</b><span>signed system updates that roll back on failure</span></li>
 			</ul>
@@ -208,6 +209,40 @@ const docs = (path = '') => `${base}/docs/${path}`;
 		</div>
 	</section>
 
+	<section id="multi-core">
+		<div class="wrap">
+			<div class="feature">
+				<div class="feature-text">
+					<span class="kicker">New in 0.10</span>
+					<h3>Every core plays</h3>
+					<p>
+						A heavy rig no longer has to fit on one core. OpenRig spreads it over all four Cortex-A76
+						cores of the Raspberry Pi 5, and over the cores of a mini PC: room for more amps,
+						more splits and longer chains at the same small buffer.
+					</p>
+					<ul class="ticks">
+						<li>The two branches of a split play at once, each on its core</li>
+						<li>Long chains are cut into pipeline stages, with no added latency</li>
+						<li>Bit for bit the same sound as on one core, checked by a test</li>
+						<li>Old and new preset play side by side during the crossfade</li>
+					</ul>
+					<table class="spec" style="margin-top: 24px">
+						<tbody>
+							<tr><th>8 captures in series</th><td>935 → 417 µs per period (× 2.2)</td></tr>
+							<tr><th>4 splits, a capture per branch</th><td>925 → 424 µs (× 2.2)</td></tr>
+							<tr><th>16 captures, dropouts in 60 s</th><td>533 on one core → 17</td></tr>
+						</tbody>
+					</table>
+					<p class="caption" style="text-align: left; margin-top: 10px">x86_64 test machine, 4 cores, PREEMPT_RT, 128 frames at 48 kHz: one core against Auto.</p>
+					<a class="more" href={docs('setup/performance/#multi-core-dsp')} data-umami-event="docs-link" data-umami-event-location="feature" data-umami-event-target="setup/performance">Multi-core DSP in the docs →</a>
+				</div>
+				<div class="screen small">
+					<Image src={monitor} alt="The resource monitor: DSP load 43 %, peak 76 %, on 3 cores, all good with headroom available" widths={[720, 1280]} sizes="(max-width: 900px) 100vw, 680px" />
+				</div>
+			</div>
+		</div>
+	</section>
+
 	<section id="under-the-hood">
 		<div class="wrap">
 			<div class="section-head">
@@ -227,7 +262,8 @@ const docs = (path = '') => `${base}/docs/${path}`;
 					<h3>Real-time safe audio</h3>
 					<p>
 						New chains are built on another thread and crossfaded in over 20 ms. Knobs, bypass and
-						scenes change the running chain without a rebuild. The JACK callback never allocates.
+						scenes change the running chain without a rebuild. The JACK callback never allocates or
+						waits on a lock.
 					</p>
 				</div>
 				<div class="card">
@@ -266,28 +302,28 @@ const docs = (path = '') => `${base}/docs/${path}`;
 					</div>
 					<h3>Load you can see</h3>
 					<p>
-						The top bar shows the DSP load and temperature. Its details give peaks, dropouts, latency
-						and Pi throttling, and the editor shows what each block costs.
+						The top bar shows the DSP load and temperature. Its details give peaks, the cores in use,
+						dropouts, latency and Pi throttling, and the editor shows what each block costs.
 					</p>
 				</div>
 				<div class="card">
 					<div class="icon">
 						<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3v12"></path><circle cx="18" cy="6" r="3"></circle><circle cx="6" cy="18" r="3"></circle><path d="M18 9a9 9 0 0 1-9 9"></path></svg>
 					</div>
-					<h3>Released with care</h3>
+					<h3>Hard to knock over</h3>
 					<p>
-						Every pull request runs formatting, Clippy and the tests. Versions follow semver from
-						conventional commits; each release ships images, app bundles and changelog.
+						A plugin that crashes is caught: the dry signal plays while the chain is rebuilt. Broken
+						files are skipped, never fatal, and Clippy keeps panics out of the code.
 					</p>
 				</div>
 			</div>
 
 			<div class="grid two" style="margin-top: 18px">
 				<div class="card shot">
-					<Image src={monitor} alt="The resource monitor with DSP load, CPU, memory and latency" widths={[640, 1024]} sizes="(max-width: 900px) 100vw, 580px" />
+					<Image src={settingsSystem} alt="Settings: Audio & system with the interface, sample rate, buffer, periods, screen rotation and Wi-Fi country, then Processing with DSP cores on Auto (4)" widths={[640, 1024]} sizes="(max-width: 900px) 100vw, 580px" />
 					<div class="body">
-						<h3>Resource monitor</h3>
-						<p>Shown here in QEMU. On a Pi 5 it adds the SoC temperature and under-voltage flags.</p>
+						<h3>Set up from the screen</h3>
+						<p>Audio interface, sample rate, buffer, screen rotation, Wi-Fi country and DSP cores, without a computer.</p>
 					</div>
 				</div>
 				<div class="card shot">
@@ -313,7 +349,7 @@ const docs = (path = '') => `${base}/docs/${path}`;
 					</p>
 					<table class="spec" style="margin-top: 32px">
 						<tbody>
-							<tr><th>Computer</th><td>Raspberry Pi 5 (or Pi 500), or an x86_64 mini PC with UEFI and Intel graphics</td></tr>
+							<tr><th>Computer</th><td>Raspberry Pi 5 (or Pi 500), or an x86_64 mini PC with UEFI, Intel graphics and an AVX2 CPU (Intel N100, Haswell or newer)</td></tr>
 							<tr><th>Audio</th><td>Any class-compliant USB audio interface</td></tr>
 							<tr><th>Screen</th><td>A touchscreen; 1024×600 and up. A mouse works too</td></tr>
 							<tr><th>Storage</th><td>A micro SD card of 8 GB or more: about 3 GB of system, the rest for your models</td></tr>

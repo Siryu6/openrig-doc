@@ -5,9 +5,17 @@ description: The hardware OpenRig runs on, and what to look for.
 
 OpenRig needs no custom board: every part is a standard one.
 
+:::caution[x86_64: the CPU needs AVX2]
+Since 0.10.0 the x86_64 image is built for **x86-64-v3**: the processor needs AVX2 and FMA.
+That is any Intel CPU from Haswell (2013) on, the N100 included, and AMD from Excavator and Zen
+on. Low-power Celerons and Pentiums without AVX2 (J4125, N4020, J3455…) cannot start it. On a
+running Linux, `grep -o avx2 /proc/cpuinfo` prints `avx2` if the CPU has it: check before buying.
+The Raspberry Pi 5 is not concerned.
+:::
+
 | Part | What to get |
 |---|---|
-| Computer | A **Raspberry Pi 5** (or a Pi 500), or an **x86_64 mini PC** with UEFI and Intel graphics (Intel N100, Lenovo Tiny…) |
+| Computer | A **Raspberry Pi 5** (or a Pi 500), or an **x86_64 mini PC** with UEFI, Intel graphics and an **AVX2** CPU (Intel N100, Lenovo Tiny with a Core i…) |
 | Audio interface | A USB audio interface that works without a driver (class compliant), or a sound HAT on the Pi |
 | Screen | A touchscreen. The UI is made for 1024 × 600 and up; a mouse works too |
 | Storage | A micro SD card for the Pi, a USB stick or an SSD for a mini PC; 8 GB or more |
@@ -18,7 +26,8 @@ OpenRig needs no custom board: every part is a standard one.
 
 The Pi 5 is the main target. The release images use its `PREEMPT_RT` kernel, and the neural
 engine is tuned for its ARM cores: a full A2 amp capture uses about 12 % of one core at 128
-frames.
+frames. A heavy rig is spread over **all four Cortex-A76 cores**, not just one: see
+[Performance](../../setup/performance/#multi-core-dsp).
 
 ### Power
 
@@ -44,8 +53,15 @@ are a good fit. Some of them send wrong display data to the Pi: see
 
 ## x86_64 mini PC
 
-Any UEFI PC with **Intel graphics**: the image has no AMD GPU driver yet. It erases the whole
+Any UEFI PC with **Intel graphics** and an **x86-64-v3 CPU** (AVX2 and FMA, see above): the
+image has no AMD GPU driver yet, and it does not start on a CPU without AVX2. Built for these
+instructions, the neural amp models run about 1.8 times faster than before. It erases the whole
 disk it is written to. Secure Boot must be off.
+
+| Works | Does not start |
+|---|---|
+| Intel N100, N95, N200, N305; Core i3 / i5 / i7 from the 4th generation (Haswell, 2013) on | Celeron and Pentium J4125, J4105, N4020, N5105, J3455 and older Atoms |
+| AMD Ryzen (Zen), and AMD from Excavator on | Older AMD (Jaguar, Bulldozer, Piledriver) |
 
 :::caution
 The x86_64 image is tested in QEMU only so far. Reports from real mini PCs are welcome.
