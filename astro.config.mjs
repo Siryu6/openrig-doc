@@ -1,7 +1,7 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
-import { umamiInline, umamiScript } from './src/analytics.mjs';
+import { umamiHead } from './src/analytics.mjs';
 
 // Where the docs are served: docs.openrig.eu at the root, or GitHub Pages under
 // the repository name (SITE=https://siryu6.github.io BASE=/openrig-doc)
@@ -28,8 +28,7 @@ export default defineConfig({
 			head: [
 				{ tag: 'meta', attrs: { property: 'og:image', content: new URL(`${base.replace(/\/$/, '')}/og.png`, site).href } },
 				{ tag: 'meta', attrs: { name: 'twitter:card', content: 'summary_large_image' } },
-				{ tag: 'script', content: umamiInline },
-				{ tag: 'script', attrs: { ...umamiScript, defer: true } },
+				...umamiHead,
 			],
 			sidebar: [
 				{

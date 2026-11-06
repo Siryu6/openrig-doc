@@ -34,6 +34,9 @@ jobs:
           SITE: https://docs.openrig.eu
           BASE: /
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Umami website id of docs.openrig.eu (repository variable); no
+          # tracker while it is not set
+          UMAMI_WEBSITE_ID: ${{ vars.UMAMI_WEBSITE_ID }}
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist

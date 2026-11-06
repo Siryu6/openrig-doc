@@ -1,12 +1,23 @@
-// Umami analytics, shared by the landing page layout and the Starlight docs.
-// Cookieless; counted on openrig.eu only; skipped with Do Not Track or Global
-// Privacy Control. Event names are listed in the README.
+// Umami analytics of the docs, loaded in the Starlight head. Cookieless;
+// counted on docs.openrig.eu only; skipped with Do Not Track or Global Privacy
+// Control. Event names are listed in the README.
+
+/** Placeholder until the docs.openrig.eu website exists in Umami */
+const UMAMI_PLACEHOLDER = 'docs-website-id-not-set';
+
+/**
+ * Umami website id of docs.openrig.eu, read from UMAMI_WEBSITE_ID when the site
+ * is built (the deploy workflow passes the repository variable of that name).
+ * It is not openrig.eu's id: that one belongs to the rigs site now. While it
+ * is the placeholder, no tracker is loaded.
+ */
+export const UMAMI_WEBSITE_ID = process.env.UMAMI_WEBSITE_ID || UMAMI_PLACEHOLDER;
 
 /** Attributes of the Umami tracker script */
 export const umamiScript = {
 	src: 'https://stats.siryu.me/script.js',
-	'data-website-id': 'fa9bf012-2401-4451-9d2d-08922a9f8063',
-	'data-domains': 'openrig.eu',
+	'data-website-id': UMAMI_WEBSITE_ID,
+	'data-domains': 'docs.openrig.eu',
 	'data-do-not-track': 'true',
 	'data-performance': 'true',
 	'data-before-send': 'openrigBeforeSend',
@@ -60,3 +71,13 @@ export const umamiInline = `(() => {
 		});
 	});
 })();`;
+
+/** Starlight head entries: the inline script and the tracker, or nothing without a website id */
+export const umamiHead =
+	UMAMI_WEBSITE_ID === UMAMI_PLACEHOLDER
+		? []
+		: [
+				{ tag: 'script', content: umamiInline },
+				{ tag: 'script', attrs: { ...umamiScript, defer: true } },
+			];
+if (UMAMI_WEBSITE_ID === UMAMI_PLACEHOLDER) console.warn('[analytics] UMAMI_WEBSITE_ID is not set: no Umami tracker');
