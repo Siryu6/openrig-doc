@@ -55,17 +55,11 @@ counts on `docs.openrig.eu` (not local previews or github.io), and sends nothing
 has Do Not Track or Global Privacy Control on, or after the opt-out on `/privacy/`. Query strings
 are stripped from URLs except `utm_*` tags. Web Vitals are sent too (`data-performance`).
 
-docs.openrig.eu is its own website in Umami. Its id is read from `UMAMI_WEBSITE_ID` when the site
-is built; the deploy workflow passes the repository variable of the same name. To set it up:
-
-1. In Umami, add a website for `docs.openrig.eu` and copy its id.
-2. In the GitHub repository, *Settings → Secrets and variables → Actions → Variables*, add
-   `UMAMI_WEBSITE_ID` with that id (or `gh variable set UMAMI_WEBSITE_ID --body <id>`).
-3. Run the deploy workflow again.
-
-While it is not set, the build warns and the pages load no tracker at all. The id the site used
-before (`fa9bf012-…`) stays with openrig.eu, now served by the rigs site, so its history goes on
-there. For a local build with the tracker: `UMAMI_WEBSITE_ID=<id> npm run build`.
+docs.openrig.eu is its own website in Umami, id `d6be4cd7-2560-4f20-b463-4c4a290de649` (in
+`src/analytics.mjs`). A build can override it with `UMAMI_WEBSITE_ID`; the deploy workflow passes the
+repository variable of that name when it is set. `UMAMI_WEBSITE_ID=docs-website-id-not-set npm run
+build` builds the site without any tracker. The id the site used before (`fa9bf012-…`) stays with
+openrig.eu, now served by the rigs site, so its history goes on there.
 
 | Event | Properties | When |
 |---|---|---|
