@@ -2,18 +2,13 @@
 // Home page section on the rigs site. Its state (coming soon or live) and its
 // links are set in src/rigs.mjs.
 import { GITHUB_URL, REDDIT_URL, RIGS_LIVE, RIGS_URL } from '../rigs.mjs';
+// The chain, drawn by the rigs site's rack renderer (the app's rack: shapes,
+// family colours, LEDs and the TONE3000 mark on models from TONE3000)
+import rackSvg from '../assets/rig-rack.svg?raw';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const state = RIGS_LIVE ? 'live' : 'soon';
-
-// The illustration: a rig as the rack draws it, block colours from the app
-const blocks = [
-	{ name: 'Drive', color: '#e0b030' },
-	{ name: 'Lead amp', color: '#d24b3c' },
-	{ name: '4x12 cab', color: '#e07a2e' },
-	{ name: 'Chorus', color: '#8f6ae0' },
-	{ name: 'Hall', color: '#2fb3a6' },
-];
+const rack = rackSvg.replaceAll('/static/t3k-mark.svg', `${base}/t3k-mark.svg`);
 ---
 
 <section id="rigs" class="band">
@@ -58,7 +53,7 @@ const blocks = [
 				<a class="more" href={`${base}/docs/using/rigs/`} data-umami-event="docs-link" data-umami-event-location="feature" data-umami-event-target="using/rigs">Sharing rigs in the docs →</a>
 			</div>
 
-			<div class="rig-visual" data-state={state} role="img" aria-label="Illustration of a shared rig: a chain of five blocks, its name and author, upvotes, favourites and comments, and an Install on pedalboard button">
+			<div class="rig-visual" data-state={state} role="img" aria-label="Illustration of a shared rig: its chain (IN, Drive pedal, Lead amp, 4x12 cab, Chorus, Hall, OUT), its name and author, upvotes, favourites and comments, and an Install on pedalboard button">
 				<div class="rig-ghost two" aria-hidden="true"></div>
 				<div class="rig-ghost one" aria-hidden="true"></div>
 				<div class="rig-card" aria-hidden="true">
@@ -71,14 +66,7 @@ const blocks = [
 					</div>
 
 					<div class="rig-chain">
-						<span class="rig-port">IN</span>
-						{blocks.map((block) => (
-							<span class="rig-block" style={`--c: ${block.color}`}>
-								<i></i>
-								{block.name}
-							</span>
-						))}
-						<span class="rig-port">OUT</span>
+						<Fragment set:html={rack} />
 					</div>
 
 					<ul class="rig-sources">
@@ -134,6 +122,7 @@ const blocks = [
 	/* The illustration: a rig card over two others, like a list of rigs */
 	.rig-visual {
 		position: relative;
+		min-width: 0;
 		padding: 34px 0 30px;
 	}
 
@@ -202,72 +191,26 @@ const blocks = [
 		background: var(--amber-soft);
 	}
 
-	/* The chain, drawn like the rack: blocks on a signal line */
+	/* The chain, as the app's rack draws it: shrinks with the card down to
+	   three quarters of its size, then scrolls */
 	.rig-chain {
-		position: relative;
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		gap: 8px;
-		margin-top: 22px;
-		padding: 22px 12px;
-		border: 1px solid var(--line);
-		border-radius: 12px;
+		margin: 22px -22px 0;
+		padding: 14px 22px;
+		overflow-x: auto;
+		border-block: 1px solid var(--line);
 		background: #050506;
+		scrollbar-color: var(--line-2) transparent;
 	}
 
-	.rig-chain::before {
-		content: '';
-		position: absolute;
-		left: 18px;
-		right: 18px;
-		top: 50%;
-		height: 2px;
-		background: #3a3a42;
+	.rig-chain :global(.rig-rack) {
+		display: block;
+		width: 100%;
+		min-width: 540px;
+		height: auto;
 	}
 
-	.rig-port,
-	.rig-block {
-		position: relative;
-		display: grid;
-		place-items: center;
-		text-align: center;
-		font-weight: 700;
-		line-height: 1.15;
-	}
-
-	.rig-port {
-		padding: 4px 6px;
-		border: 1px solid #3a3a42;
-		border-radius: 4px;
-		background: #050506;
-		font-size: 10.5px;
-		color: var(--muted);
-	}
-
-	.rig-block {
-		flex: 1;
-		min-width: 0;
-		height: 54px;
-		padding: 0 4px;
-		border: 2px solid var(--c);
-		border-radius: 6px;
-		background: #121215;
-		box-shadow: 0 0 14px -4px var(--c);
-		font-size: 12px;
-		overflow-wrap: anywhere;
-		hyphens: auto;
-	}
-
-	.rig-block i {
-		position: absolute;
-		top: 4px;
-		right: 4px;
-		width: 6px;
-		height: 6px;
-		border-radius: 50%;
-		background: #5fd068;
-		box-shadow: 0 0 6px #5fd068;
+	.rig-chain :global(.rig-rack text) {
+		font-feature-settings: 'calt' 0;
 	}
 
 	.rig-sources {
@@ -332,17 +275,6 @@ const blocks = [
 	}
 
 	@media (max-width: 520px) {
-		.rig-chain {
-			gap: 5px;
-			padding: 18px 8px;
-		}
-		.rig-port {
-			display: none;
-		}
-		.rig-block {
-			height: 48px;
-			font-size: 10.5px;
-		}
 		.rig-install {
 			margin-left: 0;
 			width: 100%;
