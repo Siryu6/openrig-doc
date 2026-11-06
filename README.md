@@ -19,6 +19,7 @@ npm run build     # static site in dist/
 | `src/assets/shots/` | Screenshots of the pedalboard (2048 × 1200) |
 | `public/media/` | Screen recordings (MP4 and WebM, with a poster) |
 | `src/styles/` | Documentation theme, dark and light |
+| `REDIRECTS.md` | Old `openrig.eu/docs/…` addresses and the Caddy redirects to here |
 
 Screenshots come from the x86_64 OS image running in QEMU, as does the TONE3000 recording.
 Captures shown in them belong to their creators on TONE3000, who are credited in the captions.
