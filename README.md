@@ -46,6 +46,12 @@ Query strings are stripped from URLs except `utm_*` tags. Web Vitals are sent to
 | `copy-code` | `page` | Copy button of a code block |
 | `search-open` | `page` | Docs search opened (the typed query is never sent) |
 | `search-result` | `target` | Search result chosen: the page it leads to |
+| `rigs-follow` | `target` (`reddit` / `github`) | Home page rigs section, while the rigs site is not live |
+| `rigs-browse` | `location` | "Browse rigs" on the home page, once the rigs site is live |
+
+The rigs section of the home page (`src/components/Rigs.astro`) says "Coming soon" and asks to
+follow the project until `RIGS_LIVE` is set to `true` in `src/rigs.mjs`; it then links to
+`RIGS_URL` with "Browse rigs".
 
 Links take a `data-umami-event` attribute where they are written in a component; links in the
 Markdown, the search and code blocks are tracked by the inline script in `src/analytics.mjs`.

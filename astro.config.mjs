@@ -49,6 +49,7 @@ export default defineConfig({
 						{ label: 'Amps, pedals and cabinets', slug: 'docs/using/neural-blocks' },
 						{ label: 'TONE3000', slug: 'docs/using/tone3000' },
 						{ label: 'Presets, scenes and setlists', slug: 'docs/using/presets' },
+						{ label: 'Sharing rigs', slug: 'docs/using/rigs', badge: { text: 'Soon', variant: 'note' } },
 						{ label: 'Live page and footswitches', slug: 'docs/using/live' },
 						{ label: 'Tuner and looper', slug: 'docs/using/tuner-looper' },
 						{ label: 'MIDI', slug: 'docs/using/midi' },

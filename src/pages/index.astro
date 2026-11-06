@@ -2,6 +2,7 @@
 import { Image } from 'astro:assets';
 import SiteLayout from '../components/SiteLayout.astro';
 import Video from '../components/Video.astro';
+import Rigs from '../components/Rigs.astro';
 import { latestVersion } from '../release.mjs';
 
 import strip from '../assets/shots/strip.png';
@@ -242,6 +243,8 @@ const docs = (path = '') => `${base}/docs/${path}`;
 			</div>
 		</div>
 	</section>
+
+	<Rigs />
 
 	<section id="under-the-hood">
 		<div class="wrap">
