@@ -1,8 +1,9 @@
-# OpenRig website
+# OpenRig documentation
 
-The website and user documentation of [OpenRig](https://github.com/Siryu6/OpenRig), the open
-source guitar pedalboard. Built with [Astro](https://astro.build) and
-[Starlight](https://starlight.astro.build).
+The user documentation of [OpenRig](https://github.com/Siryu6/OpenRig), the open source guitar
+pedalboard, published at [docs.openrig.eu](https://docs.openrig.eu). Built with
+[Astro](https://astro.build) and [Starlight](https://starlight.astro.build). The home page and
+the rigs live on [openrig.eu](https://openrig.eu), a separate site.
 
 ```bash
 npm install
@@ -12,11 +13,12 @@ npm run build     # static site in dist/
 
 | Path | |
 |---|---|
-| `src/pages/index.astro` | Landing page |
-| `src/content/docs/docs/` | Documentation, served under `/docs/` |
+| `src/content/docs/` | Documentation, served at the root (`index.mdx` is the landing page) |
+| `src/pages/privacy.astro` | Privacy page (`/privacy/`) |
+| `src/links.mjs` | Links back to openrig.eu and GitHub, in the header and footer |
 | `src/assets/shots/` | Screenshots of the pedalboard (2048 × 1200) |
 | `public/media/` | Screen recordings (MP4 and WebM, with a poster) |
-| `src/styles/` | Landing page and documentation themes |
+| `src/styles/` | Documentation theme, dark and light |
 
 Screenshots and recordings come from the x86_64 OS image running in QEMU, except the home page
 video. Captures shown in them belong to their creators on TONE3000, who are credited in the
@@ -36,40 +38,32 @@ scripts/record-hero.sh /path/to/OpenRig/target/release/pedalboard
 The script lists what it needs (Xvfb, JACK 2, ffmpeg, python-xlib, numpy, uv) and the TONE3000
 tones and store plugin the preset uses, read from the desktop app's data directory.
 
-The site is published at [openrig.eu](https://openrig.eu) by GitHub Pages on every push to
-`main`. `SITE` and `BASE` set where it is served (`BASE=/openrig-site` to serve it under the
-repository name instead of the custom domain).
+The site is published at [docs.openrig.eu](https://docs.openrig.eu) (`public/CNAME`) by GitHub
+Pages on every push to `main`, and every 6 hours to pick up a new OpenRig release. `SITE` and
+`BASE` set where it is served (`SITE=https://siryu6.github.io BASE=/openrig-doc` to serve it
+under the repository name instead of the custom domain).
 
 ## Analytics
 
 Visits are counted with a self-hosted [Umami](https://umami.is) at `stats.siryu.me`, set up in
-`src/analytics.mjs` and loaded on every page (landing layout and Starlight `head`). It sets no
-cookies, only counts on `openrig.eu` (not local previews or github.io), and sends nothing when
+`src/analytics.mjs` and loaded on every page by the Starlight `head`. It sets no
+cookies, only counts on `docs.openrig.eu` (not local previews or github.io), and sends nothing when
 the browser has Do Not Track or Global Privacy Control on, or after the opt-out on `/privacy`.
 Query strings are stripped from URLs except `utm_*` tags. Web Vitals are sent too
 (`data-performance`).
 
 | Event | Properties | When |
 |---|---|---|
-| `get-started` | `location` | Hero "Get started" button |
-| `download` | `location`, `version` / `page` | Link to the GitHub releases |
-| `github` | `location`, `target` | Link to the OpenRig repository, its issues or changelog |
-| `docs-link` | `location`, `target` | Landing page link into the docs |
+| `download` | `location`, `page` | Link to the GitHub releases |
 | `outbound` | `host`, `url`, `page` | Any other link to another site |
 | `edit-page` | `page` | "Edit page" link in the docs |
 | `video-play` | `name`, `page` | First play of a docs recording |
 | `copy-code` | `page` | Copy button of a code block |
 | `search-open` | `page` | Docs search opened (the typed query is never sent) |
 | `search-result` | `target` | Search result chosen: the page it leads to |
-| `rigs-follow` | `target` (`reddit` / `github`) | Home page rigs section, while the rigs site is not live |
-| `rigs-browse` | `location` | "Browse rigs" on the home page, once the rigs site is live |
 
-The rigs section of the home page (`src/components/Rigs.astro`) says "Coming soon" and asks to
-follow the project until `RIGS_LIVE` is set to `true` in `src/rigs.mjs`; it then links to
-`RIGS_URL` with "Browse rigs".
-
-Links take a `data-umami-event` attribute where they are written in a component; links in the
-Markdown, the search and code blocks are tracked by the inline script in `src/analytics.mjs`.
+Links are tracked by the inline script in `src/analytics.mjs` (links to openrig.eu and GitHub
+count as `outbound`); a link can also take a `data-umami-event` attribute of its own.
 
 TONE3000 is a trademark of TONE3000; OpenRig is an independent project that uses the TONE3000
 API. The site content is licensed under the GPL-3.0-or-later, like OpenRig.

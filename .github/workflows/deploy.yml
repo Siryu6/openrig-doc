@@ -31,7 +31,7 @@ jobs:
       # Served at the root of the custom domain (public/CNAME)
       - run: npm run build
         env:
-          SITE: https://openrig.eu
+          SITE: https://docs.openrig.eu
           BASE: /
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/upload-pages-artifact@v3

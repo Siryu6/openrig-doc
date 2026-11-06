@@ -3,9 +3,9 @@ import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 import { umamiInline, umamiScript } from './src/analytics.mjs';
 
-// Where the site is served: openrig.eu at the root, or GitHub Pages under
-// the repository name (SITE=https://siryu6.github.io BASE=/openrig-site)
-const site = process.env.SITE ?? 'https://openrig.eu';
+// Where the docs are served: docs.openrig.eu at the root, or GitHub Pages under
+// the repository name (SITE=https://siryu6.github.io BASE=/openrig-doc)
+const site = process.env.SITE ?? 'https://docs.openrig.eu';
 const base = process.env.BASE ?? '/';
 
 export default defineConfig({
@@ -19,7 +19,7 @@ export default defineConfig({
 			logo: { src: './src/assets/logo-mark.svg', alt: 'OpenRig' },
 			favicon: '/favicon.svg',
 			social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/Siryu6/OpenRig' }],
-			editLink: { baseUrl: 'https://github.com/Siryu6/openrig-site/edit/main/' },
+			editLink: { baseUrl: 'https://github.com/Siryu6/openrig-doc/edit/main/' },
 			components: {
 				Footer: './src/components/DocsFooter.astro',
 				SocialIcons: './src/components/SocialIcons.astro',
