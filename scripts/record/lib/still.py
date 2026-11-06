@@ -6,7 +6,11 @@ import json, re, subprocess, sys
 
 loop, story_file, fps = sys.argv[1], sys.argv[2], int(sys.argv[3])
 story = json.load(open(story_file))
-start, track = story['start'], story['track']
+start, track, cuts = story['start'], story['track'], story.get('cuts', [])
+
+def loop_time(wall):
+    # Time in the loop of a wall clock time: the cuts before it are left out
+    return wall - start - sum(min(b, wall) - a for a, b in cuts if a < wall)
 
 # Times (from the start of the loop) when the finger moves (moves log the
 # pointer at 240 Hz: samples further apart are a pause)
@@ -14,7 +18,7 @@ busy = []
 for a, b in zip(track, track[1:]):
     moving = (round(a[1]), round(a[2])) != (round(b[1]), round(b[2])) and b[0] - a[0] < 0.05
     if moving:
-        busy.append((a[0] - start, b[0] - start))
+        busy.append((loop_time(a[0]), loop_time(b[0])))
 
 log = subprocess.run(['ffmpeg', '-nostdin', '-v', 'debug', '-i', loop, '-vf', 'mpdecimate', '-f', 'null', '-'],
                      capture_output=True, text=True).stderr

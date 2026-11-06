@@ -21,11 +21,11 @@ npm run build     # static site in dist/
 | `src/styles/` | Documentation theme, dark and light |
 | `REDIRECTS.md` | Old `openrig.eu/docs/…` addresses and the Caddy redirects to here |
 
-Screenshots come from the x86_64 OS image running in QEMU, as does the TONE3000 recording.
+Screenshots come from the x86_64 OS image running in QEMU.
 Captures shown in them belong to their creators on TONE3000, who are credited in the captions.
 
-The `hero` (tour of the screen, also on the openrig.eu home page) and `live` recordings are made
-by `scripts/record.sh <story>` from a release build of OpenRig on a virtual display (Xvfb,
+The `hero` (tour of the screen, also on the openrig.eu home page), `live` and `tone3000`
+recordings are made by `scripts/record.sh <story>` from a release build of OpenRig on a virtual display (Xvfb,
 1024×600 scaled to 1280×750) with a dummy JACK server: the story in
 `scripts/record/<story>/story.py` is played with XTest, captured losslessly at 30 fps, cut to a
 seamless loop with a finger drawn on it, checked with mpdecimate (frames only repeat while
@@ -41,6 +41,12 @@ A new story is a folder in `scripts/record/` with `story.py`, `story.conf` and, 
 needs setting up first, `prep.py`; the helpers are in `scripts/record/lib/`. The script lists
 what it needs (Xvfb, JACK 2, ffmpeg, python-xlib, numpy, uv, optionally bwrap) and the TONE3000
 tones and store plugin the preset uses, copied from the desktop app's data directory.
+
+The `tone3000` story is online: it signs in with the TONE3000 account linked in the desktop app
+(copied, and copied back if the app refreshed it) and downloads a model of a trending amp. It
+waits on the screen for the network; only what a wait takes beyond the pause planned for it is
+cut out. Check the row of the tone in the trending amps first (`TONE_ROW`, default 3) and the
+caption in `src/content/docs/using/tone3000.mdx`.
 
 The site is published at [docs.openrig.eu](https://docs.openrig.eu) (`public/CNAME`) by GitHub
 Pages on every push to `main`, and every 6 hours to pick up a new OpenRig release. `SITE` and

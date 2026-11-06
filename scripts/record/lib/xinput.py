@@ -1,5 +1,6 @@
 # Pointer gestures over XTest, timed against a monotonic clock
 import math, time
+import numpy as np
 from Xlib import X, display
 from Xlib.ext import xtest
 
@@ -10,12 +11,16 @@ pos = [0, 0]
 down = [0]
 # Pointer track for the touch overlay: wall clock (as x11grab stamps frames), x, y, pressed
 track = []
+# Waits on the network cut out of the video: wall clock (start, end) of each,
+# and their total, which the story clock leaves out
+cuts = []
+shift = [0.0]
 
 def log():
     track.append((time.time(), pos[0], pos[1], down[0]))
 
 def now():
-    return time.monotonic() - T0
+    return time.monotonic() - T0 - shift[0]
 
 def begin(at=None):
     # Start the story clock now, or at the wall clock time `at`; returns the
@@ -33,6 +38,28 @@ def wait_until(t):
         if left <= 0:
             return
         time.sleep(min(left, 0.004))
+
+def screen(x, y, w, h):
+    # Pixels of a screen area, RGB, as int16 (differences fit)
+    raw = d.screen().root.get_image(x, y, w, h, X.ZPixmap, 0xffffffff).data
+    return np.frombuffer(raw, np.uint8).reshape(h, w, 4)[..., 2::-1].astype(np.int16)
+
+def wait_for(ready, t, timeout=30.0):
+    # Waits until `ready()` (polled on the screen) and story time t: what the
+    # app takes beyond t (the network) is cut out of the video, and the story
+    # goes on at t. Returns the seconds cut.
+    while now() < t:
+        time.sleep(0.01)
+    if ready():
+        return 0.0
+    a, m = time.time(), time.monotonic()
+    while not ready():
+        if time.monotonic() - m > timeout:
+            raise SystemExit(f'still waiting after {timeout} s at {t:.2f} s')
+        time.sleep(0.02)
+    cuts.append((a, time.time()))
+    shift[0] += time.monotonic() - m
+    return time.monotonic() - m
 
 def send_motion():
     xtest.fake_input(d, X.MotionNotify, x=int(round(pos[0])), y=int(round(pos[1])))

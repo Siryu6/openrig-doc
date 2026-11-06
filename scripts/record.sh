@@ -11,9 +11,12 @@
 # Stories, in scripts/record/<story>/:
 #   hero   the rack: a block selected, a knob turned, a reverb bypassed, the editor
 #   live   the Live page: stomps toggled, scenes recalled, the tempo tapped
+#   tone3000  the TONE3000 trending amps browsed from the Amp block, one
+#          capture downloaded and loaded (online, with the user's account)
 # A story has story.py (the gestures, timed from the start of the loop),
-# story.conf (CAPTURE: seconds to capture) and optionally prep.py, played
-# before the capture starts (to open a page, for instance).
+# story.conf (CAPTURE: seconds to capture; TONE3000=1 when it signs in) and
+# optionally prep.py, played before the capture starts (to open a page, for
+# instance).
 #
 # Build OpenRig in release mode first (cargo build --release). Every story
 # plays the "Hard Rock" preset of scripts/record/lib/rig.py, whose models are
@@ -21,7 +24,10 @@
 # the desktop app's data): download in the app Boss Metal Zone MT-2, Peavey
 # 5150 Blockletter, Mesa Boogie 2x12 V30 - XR IR PACK and BOSS CE-2w, and
 # install TAP Equalizer from the plugin store. Only these are copied; the
-# app runs on a data directory of its own, never on OPENRIG_DATA.
+# app runs on a data directory of its own, never on OPENRIG_DATA. A TONE3000
+# story also copies the account link (tone3000.json, connect it in Settings
+# first) and copies it back if the app refreshed it: TONE3000 rotates the
+# refresh token, so the old copy would no longer sign in.
 #
 # Needs Xvfb, jackd (JACK 2), ffmpeg with libvpx-vp9 and libx264, python3 with
 # python-xlib and numpy, and uv (for the JACK-Client Python module). With
@@ -39,6 +45,7 @@ lib=$here/record/lib
 dir=$here/record/$story
 [ -f "$dir/story.py" ] || { echo "no story '$story' in $here/record" >&2; exit 1; }
 CAPTURE=15
+TONE3000=
 # shellcheck source=/dev/null
 . "$dir/story.conf"
 src=${OPENRIG_DATA:-$HOME/.local/share/pedalboard}
@@ -52,6 +59,10 @@ pids=()
 cleanup() {
 	for pid in "${pids[@]}"; do kill "$pid" 2>/dev/null || true; done
 	wait 2>/dev/null || true
+	# The account link, refreshed by the app: back where it came from
+	if [ -n "$TONE3000" ] && [ -f "${data:-}/tone3000.json" ] && ! cmp -s "$data/tone3000.json" "$src/tone3000.json"; then
+		cp "$data/tone3000.json" "$src/tone3000.json" && chmod 600 "$src/tone3000.json"
+	fi
 	if [ "${RECORD_KEEP:-}" = 1 ]; then echo "kept $work"; else rm -rf "$work"; fi
 }
 trap cleanup EXIT
@@ -67,6 +78,11 @@ for tone in 'Pedals/Boss Metal Zone MT-2 [96210]' 'Amps/Peavey 5150 Blockletter 
 		{ echo "missing TONE3000 tone: $tone" >&2; exit 1; }
 done
 cp -r "$src/lv2/tap-eq.lv2" "$data/lv2/" || { echo "missing TAP Equalizer (plugin store)" >&2; exit 1; }
+if [ -n "$TONE3000" ]; then
+	grep -q '"session"' "$src/tone3000.json" 2>/dev/null ||
+		{ echo "no TONE3000 account linked in $src (Settings > TONE3000)" >&2; exit 1; }
+	cp -p "$src/tone3000.json" "$data/"
+fi
 python3 "$lib/rig.py" "$data"
 
 export DISPLAY=$display JACK_DEFAULT_SERVER=$server XDG_RUNTIME_DIR=$work/run
