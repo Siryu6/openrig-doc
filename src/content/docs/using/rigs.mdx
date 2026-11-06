@@ -1,6 +1,6 @@
 ---
 title: Sharing rigs
-description: Export a preset as a rig, install other players' rigs, and share them on openrig.eu.
+description: Export a preset as a rig, install other players' rigs, and share them on openrig.eu, from your computer or the pedalboard.
 ---
 
 A **rig** is a [preset](../presets/) you can share: one `.openrig` file holding the chain
@@ -87,7 +87,60 @@ the chain as the rack does, with its scenes and the list of what it needs.
     description, tags and later versions. A rig with items only your pedalboard has (see
     [Export](#export)) cannot be published.
 - **Link a pedalboard** to your account at [openrig.eu/link](https://openrig.eu/link) with the
-  short code it shows: a linked pedalboard can list your favourites and publish rigs in your
-  name. Linked pedalboards are listed, and can be unlinked, in the site's settings. Signing in
-  from the pedalboard comes with a later OpenRig version; until then, download a rig on the site
-  and import it as above.
+  short code it shows (see below). Linked pedalboards are listed, and can be unlinked, in the
+  site's settings.
+
+## openrig.eu from the pedalboard
+
+The **Rigs** panel has two tabs: **This pedalboard** (export and import, as above) and
+**openrig.eu**. The pedalboard needs a network connection
+([Wi-Fi](../../setup/settings/#wi-fi) or Ethernet); without one, the tab says so and the
+pedalboard keeps playing.
+
+### Browse and install
+
+No account is needed to browse and install.
+
+- Tap the search field to search with the on-screen keyboard, pick a sort (**Trending**,
+  **New**, **Top** of the week, **Downloads**) and a style. **Load more** shows the next rigs.
+- Each card shows the rig's name, author, style, votes and downloads, with a **STORE** or
+  **TONE3000** badge when it needs plugins from the store or models from TONE3000.
+- Tap a rig to open it: its description, scenes, versions and address on the site, and on the
+  right what it needs, each item marked when this pedalboard already has it.
+- **Install** downloads the rig and shows the same plan as a file from the
+  [Import](#import) list. It then installs what is missing and adds the new preset.
+
+### Link your account
+
+Linking lets the pedalboard use your favourites and publish in your name. It never sees your
+GitHub password.
+
+1. On the **openrig.eu** tab, tap **Link**.
+2. The pedalboard shows a QR code, a short code and `openrig.eu/link`. Scan the code with your
+   phone, or open the address on any device, sign in and enter the code.
+3. Approve the pedalboard on the site. A few seconds later the pedalboard shows
+   **Signed in as @you**.
+
+The code expires after a few minutes; **Cancel** stops waiting. To unlink, open the account
+button (**@you**) and tap **Unlink**: the pedalboard forgets its key and the site revokes it.
+Unlinking it from the site's settings works too: the pedalboard notices on its next call.
+
+### Favourites
+
+Once linked, **My favourites** lists the rigs you added to your favourites, on the site or on the
+pedalboard.
+Tap one, then **Install**. On a rig, **Add to favourites** adds it; tap **Favourite** to
+remove it.
+
+### Publish a preset
+
+Once linked, **Publish preset** shares the current preset:
+
+1. The pedalboard exports it (without its MIDI CCs) and checks what it needs. Items only this
+   pedalboard has, such as a plugin copied by hand or your own model or impulse response, cannot
+   be had by others: they are listed, and publishing waits until you remove them or replace
+   them with store plugins and TONE3000 models.
+2. Pick a **style** and write a short **description** with the on-screen keyboard.
+3. If you already published a rig with the same name, the pedalboard offers to publish a
+   **new version** of it, with an optional **changelog**. Turn it off to publish a separate rig.
+4. Tap **Publish**. The pedalboard shows the rig's address on openrig.eu, to share.
