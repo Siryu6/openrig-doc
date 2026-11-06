@@ -18,8 +18,23 @@ npm run build     # static site in dist/
 | `public/media/` | Screen recordings (MP4 and WebM, with a poster) |
 | `src/styles/` | Landing page and documentation themes |
 
-Screenshots and recordings come from the x86_64 OS image running in QEMU. Captures shown in
-them belong to their creators on TONE3000, who are credited in the captions.
+Screenshots and recordings come from the x86_64 OS image running in QEMU, except the home page
+video. Captures shown in them belong to their creators on TONE3000, who are credited in the
+captions.
+
+The home page video (`public/media/hero.*`) is recorded by `scripts/record-hero.sh` from a
+release build of OpenRig on a virtual display (Xvfb, 1024×600 scaled to 1280×750) with a dummy
+JACK server: the story in `scripts/hero/story.py` is played with XTest, captured losslessly at
+30 fps, cut to a seamless 12 s loop with a finger drawn on it, then encoded to VP9, H.264 and a
+poster. Re-record it for a release that changes the rack:
+
+```bash
+cargo build --release                  # in the OpenRig repository
+scripts/record-hero.sh /path/to/OpenRig/target/release/pedalboard
+```
+
+The script lists what it needs (Xvfb, JACK 2, ffmpeg, python-xlib, numpy, uv) and the TONE3000
+tones and store plugin the preset uses, read from the desktop app's data directory.
 
 The site is published at [openrig.eu](https://openrig.eu) by GitHub Pages on every push to
 `main`. `SITE` and `BASE` set where it is served (`BASE=/openrig-site` to serve it under the

@@ -1,0 +1,100 @@
+#!/usr/bin/env bash
+# Records the home page video (public/media/hero.webm, .mp4 and .jpg) from a
+# desktop build of OpenRig: the app runs on a virtual X display (Xvfb) at
+# 1024×600 scaled by 1.25 (1280×750), on a dummy JACK server fed with strummed
+# chords, and scripts/hero/story.py plays the story with XTest. The capture is
+# lossless at 30 fps, cut to a seamless loop, and a translucent finger is drawn
+# where the pointer is (scripts/hero/compose.py).
+#
+#   scripts/record-hero.sh /path/to/OpenRig/target/release/pedalboard
+#
+# Build OpenRig in release mode first (cargo build --release). The models of
+# the preset are TONE3000 tones, read from OPENRIG_DATA (default
+# ~/.local/share/pedalboard, the desktop app's data): download in the app
+# Boss Metal Zone MT-2, Peavey 5150 Blockletter, Mesa Boogie 2x12 V30 - XR IR
+# PACK and BOSS CE-2w, and install TAP Equalizer from the plugin store.
+#
+# Needs Xvfb, jackd (JACK 2), ffmpeg with libvpx-vp9 and libx264, python3 with
+# python-xlib and numpy, and uv (for the JACK-Client Python module).
+# Environment: OPENRIG_DATA, HERO_DISPLAY (default :77), HERO_OUT (default
+# public/media), HERO_KEEP=1 to keep the work directory.
+set -euo pipefail
+
+bin=${1:?usage: $0 /path/to/pedalboard}
+bin=$(realpath "$bin")
+here=$(cd "$(dirname "$0")" && pwd)
+src=${OPENRIG_DATA:-$HOME/.local/share/pedalboard}
+display=${HERO_DISPLAY:-:77}
+out=${HERO_OUT:-$here/../public/media}
+fps=30
+work=$(mktemp -d /tmp/openrig-hero.XXXXXX)
+server=openrig-hero-$$
+pids=()
+
+cleanup() {
+	for pid in "${pids[@]}"; do kill "$pid" 2>/dev/null || true; done
+	wait 2>/dev/null || true
+	if [ "${HERO_KEEP:-}" = 1 ]; then echo "kept $work"; else rm -rf "$work"; fi
+}
+trap cleanup EXIT
+
+# A data directory of its own: the preset, its models, the TAP Equalizer
+export HOME=$work/home
+data=$HOME/.local/share/pedalboard
+mkdir -p "$data/models/Tone3000"/{Amps,Cabs,Pedals} "$data/lv2" "$work/run"
+chmod 700 "$work/run"
+for tone in 'Pedals/Boss Metal Zone MT-2 [96210]' 'Amps/Peavey 5150 Blockletter [87953]' \
+	'Cabs/Mesa Boogie 2x12 V30 - XR IR PACK [97616]' 'Pedals/BOSS CE-2w [79338]'; do
+	cp -r "$src/models/Tone3000/$tone" "$data/models/Tone3000/$(dirname "$tone")/" ||
+		{ echo "missing TONE3000 tone: $tone" >&2; exit 1; }
+done
+cp -r "$src/lv2/tap-eq.lv2" "$data/lv2/" || { echo "missing TAP Equalizer (plugin store)" >&2; exit 1; }
+python3 "$here/hero/rig.py" "$data"
+
+export DISPLAY=$display JACK_DEFAULT_SERVER=$server XDG_RUNTIME_DIR=$work/run
+export XDG_CONFIG_HOME=$HOME/.config XDG_DATA_HOME=$HOME/.local/share XDG_CACHE_HOME=$HOME/.cache
+export SLINT_SCALE_FACTOR=1.25 FONTCONFIG_FILE=$here/hero/fonts.conf  # DejaVu Sans, as on the OS image
+unset WAYLAND_DISPLAY
+
+Xvfb "$display" -screen 0 1280x750x24 -nolisten tcp >"$work/xvfb.log" 2>&1 &
+pids+=($!)
+# A long period keeps the load figure steady on a busy desktop
+jackd -n "$server" -d dummy -r 48000 -p 2048 >"$work/jack.log" 2>&1 &
+pids+=($!)
+sleep 2
+RUST_LOG=warn "$bin" >"$work/app.log" 2>&1 &
+pids+=($!)
+for _ in $(seq 50); do python3 "$here/hero/resize.py" && break; sleep 0.2; done
+uv run --quiet --with JACK-Client --with numpy python "$here/hero/strum.py" pedalboard:in_1 pedalboard:in_2 \
+	>"$work/strum.log" 2>&1 &
+pids+=($!)
+for _ in $(seq 600); do grep -q connected "$work/strum.log" && break; sleep 0.2; done
+grep -q connected "$work/strum.log" || { cat "$work/strum.log" >&2; echo "no input signal" >&2; exit 1; }
+sleep 6  # models loaded, meters and load figure settled
+
+# Lossless capture with wall clock timestamps, the story starting 1 s in
+ffmpeg -nostdin -v error -y -f x11grab -framerate $fps -draw_mouse 0 -video_size 1280x750 -i "$display" \
+	-copyts -c:v ffv1 -frames:v $((15 * fps)) "$work/capture.nut" &
+grab=$!
+sleep 1
+python3 "$here/hero/story.py" "$work/story.json"
+wait $grab
+if grep -q 'Resources running low' "$work/app.log"; then
+	echo "warning: the app reported low resources (a toast may show):" >&2
+	grep 'Resources running low' "$work/app.log" >&2
+fi
+
+python3 "$here/hero/compose.py" "$work/capture.nut" "$work/story.json" "$work/loop.nut" $fps
+
+mkdir -p "$out"
+ffmpeg -nostdin -v error -y -i "$work/loop.nut" -frames:v 1 -q:v 3 "$out/hero.jpg"
+ffmpeg -nostdin -v error -y -i "$work/loop.nut" -pix_fmt yuv420p -c:v libx264 -preset veryslow -crf 23 \
+	-tune animation -movflags +faststart -an "$out/hero.mp4"
+ffmpeg -nostdin -v error -y -i "$work/loop.nut" -pix_fmt yuv420p -c:v libvpx-vp9 -b:v 0 -crf 36 \
+	-deadline good -cpu-used 1 -row-mt 1 -an -pass 1 -passlogfile "$work/vp9" -f null /dev/null
+ffmpeg -nostdin -v error -y -i "$work/loop.nut" -pix_fmt yuv420p -c:v libvpx-vp9 -b:v 0 -crf 36 \
+	-deadline good -cpu-used 1 -row-mt 1 -an -pass 2 -passlogfile "$work/vp9" "$out/hero.webm"
+
+for f in "$out"/hero.{webm,mp4,jpg}; do echo "$(basename "$f"): $(du -k "$f" | cut -f1) KiB"; done
+echo "frames: $(ffprobe -v error -count_frames -show_entries stream=nb_read_frames -of csv=p=0 "$out/hero.mp4")," \
+	"unique: $(ffmpeg -nostdin -i "$out/hero.mp4" -vf mpdecimate -f null - 2>&1 | grep -o 'frame= *[0-9]*' | tail -1 | tr -dc 0-9)"
