@@ -17,6 +17,16 @@ def log():
 def now():
     return time.monotonic() - T0
 
+def begin(at=None):
+    # Start the story clock now, or at the wall clock time `at`; returns the
+    # wall clock time it started at (the start of the loop)
+    global T0, T0_wall
+    if at is not None:
+        while time.time() < at:
+            time.sleep(min(at - time.time(), 0.004))
+    T0, T0_wall = time.monotonic(), time.time()
+    return T0_wall
+
 def wait_until(t):
     while True:
         left = t - now()

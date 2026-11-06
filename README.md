@@ -20,23 +20,26 @@ npm run build     # static site in dist/
 | `public/media/` | Screen recordings (MP4 and WebM, with a poster) |
 | `src/styles/` | Documentation theme, dark and light |
 
-Screenshots and recordings come from the x86_64 OS image running in QEMU, except the home page
-video. Captures shown in them belong to their creators on TONE3000, who are credited in the
-captions.
+Screenshots come from the x86_64 OS image running in QEMU, as does the TONE3000 recording.
+Captures shown in them belong to their creators on TONE3000, who are credited in the captions.
 
-The home page video (`public/media/hero.*`) is recorded by `scripts/record-hero.sh` from a
-release build of OpenRig on a virtual display (Xvfb, 1024×600 scaled to 1280×750) with a dummy
-JACK server: the story in `scripts/hero/story.py` is played with XTest, captured losslessly at
-30 fps, cut to a seamless 12 s loop with a finger drawn on it, then encoded to VP9, H.264 and a
-poster. Re-record it for a release that changes the rack:
+The `hero` (tour of the screen, also on the openrig.eu home page) and `live` recordings are made
+by `scripts/record.sh <story>` from a release build of OpenRig on a virtual display (Xvfb,
+1024×600 scaled to 1280×750) with a dummy JACK server: the story in
+`scripts/record/<story>/story.py` is played with XTest, captured losslessly at 30 fps, cut to a
+seamless loop with a finger drawn on it, checked with mpdecimate (frames only repeat while
+nothing moves), then encoded to VP9, H.264 and a poster in `public/media/`. Re-record them for a
+release that changes those pages:
 
 ```bash
 cargo build --release                  # in the OpenRig repository
-scripts/record-hero.sh /path/to/OpenRig/target/release/pedalboard
+scripts/record.sh live /path/to/OpenRig/target/release/pedalboard
 ```
 
-The script lists what it needs (Xvfb, JACK 2, ffmpeg, python-xlib, numpy, uv) and the TONE3000
-tones and store plugin the preset uses, read from the desktop app's data directory.
+A new story is a folder in `scripts/record/` with `story.py`, `story.conf` and, if the app
+needs setting up first, `prep.py`; the helpers are in `scripts/record/lib/`. The script lists
+what it needs (Xvfb, JACK 2, ffmpeg, python-xlib, numpy, uv, optionally bwrap) and the TONE3000
+tones and store plugin the preset uses, copied from the desktop app's data directory.
 
 The site is published at [docs.openrig.eu](https://docs.openrig.eu) (`public/CNAME`) by GitHub
 Pages on every push to `main`, and every 6 hours to pick up a new OpenRig release. `SITE` and

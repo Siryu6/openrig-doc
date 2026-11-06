@@ -1,5 +1,6 @@
-# The hero story, in seconds from the start; ends as it started (nothing
-# selected, reverb on, knob back where it was, pointer at rest)
+# The hero story (the tour of the screen, and the openrig.eu home page), in
+# seconds from the start; ends as it started (nothing selected, reverb on,
+# knob back where it was, pointer at rest)
 # Coordinates: 1280x750 screen, the UI at 1024x600 scaled by 1.25
 # A press rests ~0.25 s before dragging a knob, as a finger does: Slint's
 # Flickable takes a drag that starts at once for a scroll. The editor's knobs
@@ -7,7 +8,6 @@
 # strip under the rack
 import json, sys
 from xinput import *
-from xinput import T0_wall
 
 REST = (1130, 640)
 AMP = (350, 372)
@@ -17,6 +17,7 @@ BACK = (118, 35)            # "< Rack" in the editor
 EMPTY = (1040, 560)         # empty rack: clears the selection
 LOOP = 12.0                 # 6 bars of the strummed loop (2 s), so the meters loop too
 
+start = begin()
 warp(*REST)
 t = 0.5
 move(*AMP, t, t + 0.55); tap(t + 0.65)                        # select the amp
@@ -38,5 +39,5 @@ move(*EMPTY, t, t + 0.4); tap(t + 0.5)                        # deselect
 t += 0.75
 move(*REST, t, LOOP - 0.05)
 wait_until(LOOP + 0.6)
-json.dump({'start': T0_wall, 'duration': LOOP, 'track': track}, open(sys.argv[1], 'w'))
+json.dump({'start': start, 'duration': LOOP, 'track': track}, open(sys.argv[1], 'w'))
 print(f'story {LOOP} s')
