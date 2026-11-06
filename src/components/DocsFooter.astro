@@ -1,24 +1,54 @@
 ---
-// Starlight's footer with the privacy line of the landing page
+// Starlight's footer, with links back to the OpenRig site and the privacy line
 import Default from '@astrojs/starlight/components/Footer.astro';
+import { GITHUB_URL, HOME_URL, RIGS_URL } from '../links.mjs';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
 <Default><slot /></Default>
-<p class="privacy">
-	Cookieless analytics with self-hosted Umami: no cookies, no personal data, Do Not Track respected.{' '}
-	<a href={`${base}/privacy/`}>Privacy</a>
-</p>
+<div class="site-footer">
+	<nav aria-label="OpenRig">
+		<a href={HOME_URL}>openrig.eu</a>
+		<a href={RIGS_URL}>Rigs</a>
+		<a href={GITHUB_URL}>Source code</a>
+		<a href={`${GITHUB_URL}/issues`}>Issues</a>
+		<a href={`${base}/privacy/`}>Privacy</a>
+	</nav>
+	<p>
+		OpenRig is free software under the GNU General Public License, version 3 or later. Cookieless usage
+		stats with self-hosted Umami: no cookies, no personal data, Do Not Track respected.
+	</p>
+	<p>
+		TONE3000 is a trademark of TONE3000; OpenRig is an independent project that uses the TONE3000 API.
+		Raspberry Pi is a trademark of Raspberry Pi Ltd. Captures shown in screenshots and videos belong to
+		their creators on TONE3000.
+	</p>
+</div>
 
 <style>
-	.privacy {
-		margin-top: 1.5rem;
+	.site-footer {
+		margin-top: 2rem;
+		padding-top: 1.25rem;
+		border-top: 1px solid var(--sl-color-hairline);
 		font-size: var(--sl-text-xs);
 		color: var(--sl-color-gray-3);
 		text-align: center;
 	}
-	.privacy a {
-		color: inherit;
+	.site-footer nav {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: 0.5rem 1.25rem;
+		margin-bottom: 0.75rem;
+		font-size: var(--sl-text-sm);
+	}
+	.site-footer a {
+		color: var(--sl-color-gray-2);
+	}
+	.site-footer p {
+		max-width: 40rem;
+		margin-inline: auto;
+		margin-top: 0.5rem;
 	}
 </style>

@@ -1,0 +1,77 @@
+---
+title: OpenRig documentation
+description: Install, play and set up OpenRig, the open source guitar pedalboard for the Raspberry Pi 5 and x86_64 mini PCs.
+template: splash
+hero:
+  title: OpenRig documentation
+  tagline: Install, play and set up the open source guitar pedalboard you build yourself, on a Raspberry Pi 5 or an x86_64 mini PC.
+  actions:
+    - text: Get started
+      link: getting-started/hardware/
+      icon: right-arrow
+    - text: Download
+      link: https://github.com/Siryu6/OpenRig/releases/latest
+      icon: external
+      variant: minimal
+    - text: Share and find rigs on openrig.eu
+      link: https://openrig.eu/rigs
+      icon: external
+      variant: minimal
+---
+
+import Shot from '../../components/Shot.astro';
+import rack from '../../assets/shots/rack.png';
+import { Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
+import Version from '../../components/Version.astro';
+
+OpenRig is a guitar multi-effects pedalboard that you assemble from standard parts: a
+Raspberry Pi 5 (or an x86_64 mini PC with an AVX2 CPU), a USB audio interface and a touchscreen. It ships as a
+small operating system that boots straight into the pedalboard: no desktop, no login, no
+computer needed once the card is written.
+
+<Shot src={rack} alt="The OpenRig rack: a pedal, an amp and a cabinet in series, then a chorus and a phaser in parallel, a hall reverb and a doubler" caption="The rack: the whole signal chain on one screen." />
+
+## Where to start
+
+<CardGrid>
+	<LinkCard title="What you need" href="getting-started/hardware/" description="The parts, and what to look for when buying them." />
+	<LinkCard title="Install on a Raspberry Pi 5" href="getting-started/raspberry-pi/" description="Write the image to a card and boot." />
+	<LinkCard title="Tour of the screen" href="using/tour/" description="Find your way around the pages and gestures." />
+	<LinkCard title="Sharing rigs" href="using/rigs/" description="Export a preset as a rig, install other players' rigs." />
+</CardGrid>
+
+<CardGrid>
+	<Card title="Download" icon="download">
+		OpenRig <Version full /> is the latest release: images for the Raspberry Pi 5 and x86_64 mini
+		PCs, and the desktop app, on the
+		[releases page](https://github.com/Siryu6/OpenRig/releases/latest).
+	</Card>
+	<Card title="Rigs on openrig.eu" icon="star">
+		Browse the rigs other players share, upvote and comment on them, and publish your own on
+		[openrig.eu](https://openrig.eu/rigs).
+	</Card>
+</CardGrid>
+
+## What it does
+
+- **Amps, pedals and cabinets** from [Neural Amp Modeler](https://www.neuralampmodeler.com)
+  captures and impulse responses, as built-in blocks.
+- **Multi-core DSP**: a heavy rig is spread over all four Cortex-A76 cores of the Pi 5, split
+  branches and pipeline stages each on their core, with no added latency and the same sound.
+- **LV2 effects**: LV2 plugins built for the board (ZAM, x42, Calf, LSP, CAPS…), and a store to
+  install more from the screen.
+- **TONE3000**: browse and download captures from [tone3000.com](https://www.tone3000.com)
+  on the pedalboard itself.
+- **Live**: presets with 8 scenes each, setlists, a stomp mode, tap tempo, a tuner and a
+  looper, played from the screen, footswitches or MIDI.
+- **Rigs**: a preset, its models and plugins packed in one file, shared and installed in one
+  tap through [openrig.eu](https://openrig.eu/rigs).
+- **An appliance**: a read-only system with a real-time kernel and signed updates that roll
+  back if something goes wrong. Audio interface, buffer and screen rotation are set from the
+  screen, and a plugin that crashes is caught while the dry signal plays on.
+
+:::note[A young project]
+OpenRig is at version <Version />. The Raspberry Pi 5 image runs on a Pi 5 (8 GB) with a Focusrite
+Scarlett 2i2 at 128 × 2; the x86_64 image is tested in QEMU so far. If something does not work,
+[open an issue](https://github.com/Siryu6/OpenRig/issues).
+:::

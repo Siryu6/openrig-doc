@@ -1,0 +1,28 @@
+---
+// Starlight's header icons, after links back to the OpenRig site (home and rigs)
+import Default from '@astrojs/starlight/components/SocialIcons.astro';
+import { SITE_LINKS } from '../links.mjs';
+---
+
+<nav class="site-links" aria-label="OpenRig">
+	{SITE_LINKS.map((link) => <a href={link.href}>{link.label}</a>)}
+</nav>
+<Default />
+
+<style>
+	.site-links {
+		display: flex;
+		gap: 1rem;
+		align-items: center;
+		margin-inline-end: 0.5rem;
+		font-size: var(--sl-text-sm);
+		white-space: nowrap;
+	}
+	.site-links a {
+		color: var(--sl-color-gray-2);
+		text-decoration: none;
+	}
+	.site-links a:hover {
+		color: var(--sl-color-white);
+	}
+</style>
