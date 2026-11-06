@@ -1,0 +1,55 @@
+---
+title: Tour of the screen
+description: The pages of OpenRig, the top bar and the gestures.
+---
+
+import Shot from '../../../components/Shot.astro';
+import Clip from '../../../components/Clip.astro';
+import strip from '../../../assets/shots/strip.png';
+
+<Clip name="hero" label="Selecting a block, turning a knob, bypassing a reverb and opening the editor" caption="Tap a block for its knobs, hold to bypass, the pencil opens the editor." />
+
+## The top bar
+
+<Shot src={strip} alt="The rack with the top bar, the Peavey 5150 amp block selected and its knobs at the bottom" caption="The top bar, the rack, and the knobs of the selected block." />
+
+From left to right:
+
+- **Preset**: the current scene in amber, the tempo, and the preset name. Tap it to pick
+  another preset.
+- **DSP / CPU**: the load of the audio processing and of the processor. The dot turns orange,
+  then red, as the load gets high. A heavy rig is spread over several cores on its own (see
+  [Multi-core DSP](../../setup/performance/#multi-core-dsp)). Tap it for the [resource monitor](../../setup/performance/).
+- **The pages**: Rack, Presets, Live, Tuner, Looper.
+- **⋮**: the menu with the TONE3000 library, Settings, and Power off.
+
+## The pages
+
+| Page | What it is for |
+|---|---|
+| [Rack](../rack/) | The signal chain: add, move, bypass and tweak blocks |
+| [Presets](../presets/) | Save and load presets, build setlists |
+| [Live](../live/) | Eight big switches for stomps, scenes or setlist presets, and the tempo |
+| [Tuner](../tuner-looper/) | A chromatic tuner, down to 38 Hz |
+| [Looper](../tuner-looper/#looper) | Record, overdub, undo |
+
+## Gestures
+
+| Gesture | On a block | Elsewhere |
+|---|---|---|
+| Tap | Select it: its knobs show at the bottom | Deselect |
+| Double tap | Open the full [block editor](../editor/) | |
+| Hold and release | Bypass it, or turn it back on | |
+| Hold and drag | Move it, also into a split branch, or onto **Remove** to delete it | |
+| Swipe | | Scroll the rack |
+
+Knobs turn with a vertical drag. Double tap a knob to put it back to its default value, or
+hold it to go back to the value before your last change. Lists open as a chooser, and text is
+typed on an on-screen keyboard.
+
+## Keyboard and encoder
+
+A USB keyboard works: keys `1` to `8` act as the footswitches and `t` taps the tempo. A rotary
+encoder wired to the GPIO drives every page without the touch screen: turn to move, press to
+open or adjust, hold to go back. Holding on a main page opens a page switcher. See
+[the encoder](../../setup/footswitches/#the-encoder).

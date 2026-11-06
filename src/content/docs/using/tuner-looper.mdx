@@ -1,0 +1,47 @@
+---
+title: Tuner and looper
+description: A tuner down to 38 Hz, and a stereo looper after the effects.
+---
+
+import Shot from '../../../components/Shot.astro';
+import tuner from '../../../assets/shots/tuner.png';
+import looper from '../../../assets/shots/looper.png';
+
+## Tuner
+
+<Shot src={tuner} alt="The tuner showing A2 in tune, 110.2 Hz, +3 cents" caption="In tune: the note turns green, the LED ramp shows the cents." />
+
+The tuner is chromatic and goes down to 38 Hz: drop tunings, 7 and 8 strings and bass guitars
+work. It only listens while its page is open, so it costs nothing the rest of the time.
+
+- **Mute while tuning** silences the outputs while the page is open, including the inputs played
+  straight on an output (see [Inputs and outputs](../../setup/routing/)).
+- **Reference** sets the pitch of A4, 440 Hz by default.
+
+Open it from the **Tuner** tab, by holding the tap footswitch, or with MIDI CC68.
+
+With a [rotary encoder](../../setup/footswitches/#the-encoder), a press on **Mute while tuning**
+toggles it. On **Reference**, press, turn to change it by 1 Hz per click, then press to keep it
+or hold to go back.
+
+## Looper
+
+<Shot src={looper} alt="The looper playing, 4.5 seconds into a 7 second loop, one layer" caption="The looper, playing a 7 second loop." />
+
+The looper records what comes out of the effects, in stereo, up to 30 seconds. It plays on the
+main mix only, not on the [sends](../../setup/routing/#send-and-return-blocks).
+
+| Button | What it does |
+|---|---|
+| **Record** | Starts recording; pressing **Play** ends the loop and plays it |
+| **Overdub** | Records a new layer over the loop |
+| **Play** / **Stop** | Plays or stops the loop |
+| **Undo** | Removes the last layer |
+| **Clear** | Erases the loop |
+
+The slider sets the loop's volume. The looper can also be driven over MIDI (CC60 to CC63, see
+[MIDI](../midi/)).
+
+With a [rotary encoder](../../setup/footswitches/#the-encoder), turn to go through the buttons
+and press to trigger one. On the volume, press, turn to change it by 5 % per click, then press to
+keep it or hold to go back.

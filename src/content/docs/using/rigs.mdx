@@ -1,0 +1,93 @@
+---
+title: Sharing rigs
+description: Export a preset as a rig, install other players' rigs, and share them on openrig.eu.
+---
+
+A **rig** is a [preset](../presets/) you can share: one `.openrig` file holding the chain
+(blocks, settings, splits, its 8 scenes and its tempo) and the list of what it needs, the
+plugins and the model files with where each one comes from. On another pedalboard, installing
+the rig fetches what is missing and adds the chain as a new preset.
+
+A rig never contains plugins or models, only references to them: plugins come from the
+[plugin store](../../setup/store/), amp, pedal and cabinet models from [TONE3000](../tone3000/)
+with your own account.
+
+## On the pedalboard
+
+On the **Presets** page, the share icon next to **Save** opens the **Rigs** panel. It has an
+**Export** card at the top and the **Import** list under it.
+
+### Export
+
+The **Export** card exports the chain as it is now, under the name of the current preset.
+
+- **Author**: your name, written in every rig you export. Set it once, it is kept. Leave it
+  empty to stay anonymous.
+- **MIDI CCs**: the MIDI controls learned by the blocks fit your own controller, so they are
+  left out unless this is on.
+- **Export** writes the rig to `rigs/<name>.openrig` in the pedalboard's data folder.
+  **To USB** writes it to a USB drive too, when one is mounted.
+
+The note under the title lists what only this pedalboard has: a plugin you copied by hand, or a
+model or impulse response of your own. Those are listed in the rig by name only; it still
+installs elsewhere, without them, but cannot be published on openrig.eu.
+
+### Import
+
+The **Import** list shows the `.openrig` files of the `rigs` folder and of the top folder of
+mounted USB drives (marked **USB**). Tap one to see what it needs, item by item:
+
+| Tag | Meaning |
+|---|---|
+| **ON BOARD** | Already on this pedalboard |
+| **STORE** | A plugin the store installs |
+| **TONE3000** | A model downloaded with your TONE3000 account ([link it](../tone3000/#linking-your-account) first) |
+| **MISSING** | Cannot be had here: the preset is installed without it |
+
+**Install rig** installs and downloads what it can, and keeps going when one item fails. It
+then saves the chain as a new preset, with the paths of this pedalboard, and loads it. Each item
+then shows **INSTALLED** or **FAILED**, and why.
+
+:::caution[USB drives on the OpenRig image]
+The OpenRig OS image does not mount USB drives by itself yet: **To USB** and the USB part of
+the list only work with the desktop app for now. On the pedalboard, copy rigs into
+`/data/pedalboard/rigs` over the network instead (see [SSH and logs](../../help/ssh/#files)):
+
+```bash
+scp -O "Plexi Crunch.openrig" root@192.168.1.42:/data/pedalboard/rigs/
+ssh root@192.168.1.42 'chown -R pedalboard:pedalboard /data/pedalboard'
+```
+
+and fetch the ones you export from the same folder.
+:::
+
+With the desktop app, the data folder is `~/.local/share/pedalboard` on Linux (or
+`$PEDALBOARD_DATA_DIR`), and USB drives are found where the desktop mounts them
+(`/media/<user>/` or `/run/media/<user>/` on Linux, `/Volumes/` on macOS). On Windows, copy
+files into the `rigs` folder.
+
+### Safety
+
+Installing a rig never runs anything from the file. A rig is at most 1 MiB and is checked
+before anything is installed; the files it names stay inside the models folder, and downloads
+go where the app decides, not where the rig says. Plugins only come from the signed store
+catalog, models only from TONE3000.
+
+## On openrig.eu
+
+[openrig.eu](https://openrig.eu/rigs) is where players share their rigs. Each rig page draws
+the chain as the rack does, with its scenes and the list of what it needs.
+
+- **Browse** the rigs: search, filter by style, tag or what they need, sort by trending, new,
+  top or downloads. Anyone can download a rig, no account needed.
+- **Sign in with GitHub** to take part:
+  - **Upvote** the rigs you like and keep them in your **favourites**.
+  - **Comment** on a rig, and get notified of replies.
+  - **Publish** your own: upload an `.openrig` file exported from your pedalboard, with a
+    description, tags and later versions. A rig with items only your pedalboard has (see
+    [Export](#export)) cannot be published.
+- **Link a pedalboard** to your account at [openrig.eu/link](https://openrig.eu/link) with the
+  short code it shows: a linked pedalboard can list your favourites and publish rigs in your
+  name. Linked pedalboards are listed, and can be unlinked, in the site's settings. Signing in
+  from the pedalboard comes with a later OpenRig version; until then, download a rig on the site
+  and import it as above.

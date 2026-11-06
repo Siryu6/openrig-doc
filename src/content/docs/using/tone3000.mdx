@@ -1,0 +1,113 @@
+---
+title: TONE3000
+description: Link a TONE3000 account and download captures on the pedalboard.
+---
+
+import Shot from '../../../components/Shot.astro';
+import Clip from '../../../components/Clip.astro';
+import { Steps } from '@astrojs/starlight/components';
+import trending from '../../../assets/shots/t3k-trending.png';
+import detail from '../../../assets/shots/t3k-detail.png';
+import downloaded from '../../../assets/shots/t3k-downloaded.png';
+import downloading from '../../../assets/shots/t3k-downloading.png';
+import pages from '../../../assets/shots/t3k-pages.png';
+
+[TONE3000](https://www.tone3000.com) hosts amp, pedal, cabinet and room captures
+shared by their creators. OpenRig uses the TONE3000 API to list them and download them on the
+pedalboard, without a computer.
+
+<Clip name="tone3000" label="From an Amp block: Choose, TONE3000, the trending amps, a Marshall JCM 800 capture downloaded and loaded, then the Peavey 5150 chosen again" caption="From an Amp block to a new capture in a few taps. Marshall JCM 800 2203 by @sarcobe." />
+
+## Linking your account
+
+This is done once, with your TONE3000 account. No key or application to create: OpenRig signs
+in through its own TONE3000 application.
+
+<Steps>
+
+1. On the pedalboard, open **⋮** → **Settings** → **TONE3000 Connect** and tap **Connect**.
+   The pedalboard shows a QR code and a short code.
+
+2. Scan the QR code with your phone, or open `tone3000.com/activate` and enter the code, then
+   approve OpenRig. The card then says **Signed in as** your TONE3000 username.
+
+</Steps>
+
+The link survives restarts and going offline. **Disconnect** removes it from the pedalboard.
+
+:::note[Updating from 0.6 or before]
+If you linked your account with a key of your own, the pedalboard signs you out once after the
+update: tap **Connect** again. The captures you downloaded stay on the pedalboard.
+:::
+
+:::tip[Developers]
+**Edit** on the **Application** line takes the publishable key (`t3k_pub_…`) of your own
+TONE3000 application; an empty key goes back to OpenRig's. Never enter a **secret** key
+(`t3k_cs_…`) on the pedalboard: OpenRig refuses it.
+:::
+
+## The library
+
+Open it from a block's editor with the **TONE3000** row at the top of the model list (see
+[Model](../editor/#model)), or from **⋮** → **TONE3000**.
+
+<Shot src={trending} alt="The TONE3000 library on the Trending tab, filtered on Amp, under the Search TONE3000 field: EVH 5150iii Ivory, Mesa/Boogie Dual Rectifier, Orange Dual Dark 100…" caption="The Trending tab, opened from an Amp block: only amps are listed, each with its creator. The search field is at the top." />
+
+| Tab | What it lists |
+|---|---|
+| **Favorites** | The tones you favorited on tone3000.com |
+| **My tones** | The tones you published |
+| **Downloaded** | The tones already on this pedalboard |
+| **Trending** | What TONE3000 users play the most right now |
+| **Latest** | The newest tones |
+
+**Search TONE3000**, at the top, opens the keyboard: type an amp, a pedal or a creator, then
+**Search**. The search is sent only then, never while typing, and keeps the gear filter. **✕**
+goes back to the tabs.
+
+Opened from a block, the library only lists the gear that block can play: amps for an Amp block,
+pedals and outboard gear for a Pedal block, cabinets for a Cabinet… Opened from the menu, every
+gear can be chosen.
+
+## Downloading
+
+Tap a tone to see its captures, its creator, its license and its page on tone3000.com.
+
+<Shot src={detail} alt="The Marshall JCM800 2203x tone by @pamukparty: Classic Crunch already downloaded with its Use button, Edge of Breakup and Heavy ticked, Download (2)" caption="A tone and its captures: two are ticked. Each one is downloaded only when you tick it." />
+
+Tick the captures you want, then tap **Download (n)**. They are downloaded one after the other:
+each one shows **Waiting…** then **Downloading…**, the bar at the bottom shows its progress, and
+**Stop** drops the ones still waiting. A tone with a single capture comes ticked already.
+
+<Shot src={downloading} alt="Edge of Breakup downloaded, Heavy downloading, and the bar saying Downloading 2 of 2 with a Stop button" caption="Downloading: one capture after the other, Stop drops the ones still waiting." />
+
+Large tones are shown 25 captures per page, with **‹ ›** to turn the pages. **Select all**
+(**Select page** on a large tone) ticks every capture of the page shown, and **Clear** unticks
+them. You can tick 25 captures at most at a time: TONE3000 asks apps not to download a whole
+pack of hundreds of captures at once.
+
+<Shot src={pages} alt="The EVH 5150iii Ivory FULL Pack with 28 captures: page 1 of 2, its captures ticked by Select page, Download (13)" caption="A pack of 28 captures, page 1 of 2: Select page ticked the ones not on the pedalboard yet. EVH 5150iii Ivory FULL Pack by @ampspedalspickups." />
+
+Once a capture is on the pedalboard, it shows:
+
+- **Use**, opened from a block: loads it into that block;
+- **Add**, opened from the menu: puts it in a new block of the right type at the end of the chain.
+
+<Shot src={downloaded} alt="The JCM800 Classic Crunch, Edge of Breakup and Heavy captures downloaded, each with its Use button" caption="Downloaded: Use loads it into the Amp block it was opened from." />
+
+Downloads go to `models/Tone3000/<gear>/<tone>/` with a `tone.json` that keeps the title,
+creator, license and link. The block's editor then shows the tone's picture and creator, and the
+block carries the TONE3000 mark in the rack.
+
+## Good to know
+
+- Captures in the NAM and IR formats can be played. AIDA-X, Proteus and AA snapshot tones are
+  listed but greyed out.
+- Favoriting is done on tone3000.com for now: what you favorite there shows in **Favorites**.
+- Every request to TONE3000 waits its turn, to stay under its rate limit: when you go fast,
+  the pedalboard can show **Waiting for TONE3000…** for a moment.
+- Your sign-in is kept only on the pedalboard, and only ever sent to tone3000.com.
+- Respect each capture's license: it is shown on the tone, and kept with the files.
+
+TONE3000 is a trademark of TONE3000. OpenRig is an independent project that uses the TONE3000
+API.

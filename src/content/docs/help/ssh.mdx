@@ -1,0 +1,73 @@
+---
+title: SSH and logs
+description: Log in to the pedalboard, read the logs and copy files.
+---
+
+The pedalboard runs an SSH server. There is no password login: only keys.
+
+## Log in
+
+1. Put your **public** key (for instance `~/.ssh/id_ed25519.pub`) in a file named
+   `authorized_keys` on the card's first partition, from any computer. Several keys can go in the
+   file, one per line.
+2. Start the pedalboard. The keys are copied at each boot; deleting the file revokes them.
+3. Log in as root, at the address shown in **Settings** → **Wi-Fi** (Ethernet included):
+
+```bash
+ssh root@192.168.1.42
+```
+
+## Logs and version
+
+```bash
+tail -f /var/log/messages     # audio server, app, storage
+cat /etc/pedalboard-release   # version of the image
+pedalboard-update status      # system slots and the last update
+```
+
+Logs are kept in memory: they start again at each boot. The app writes to syslog one line per
+event, with what varies as `name=value` fields, for instance
+`WARN ... Preset skipped path=/data/pedalboard/presets/old.json error=...`. Errors mean a feature
+is lost (no audio, a save failed), warnings that something was worked around (a file skipped, a
+retry):
+
+```bash
+grep -E "ERROR|WARN" /var/log/messages   # what went wrong since boot
+```
+
+`pedalboard-report` prints everything useful for a bug report in one go: versions and system
+slots, the settings in effect, the sound cards and how the audio server opened them, their mixer
+controls, the audio messages of the kernel, and the logs of the audio server and the app. It
+changes nothing.
+
+```bash
+pedalboard-report > report.txt
+```
+
+## Files
+
+Your data lives in `/data/pedalboard`:
+
+| Folder | What it holds |
+|---|---|
+| `models/` | Neural captures and impulse responses, `Tone3000/` for downloads |
+| `presets/`, `scenes/` | Presets and setlists |
+| `rigs/` | Exported and imported [rigs](../../using/rigs/) (`.openrig` files) |
+| `lv2/` | LV2 plugin bundles |
+
+Copy files with `scp -O`, then give them to the app:
+
+```bash
+scp -O -r "My Rig" root@192.168.1.42:/data/pedalboard/models/
+ssh root@192.168.1.42 'chown -R pedalboard:pedalboard /data/pedalboard'
+```
+
+### Back up
+
+Before writing a new image to the card, which erases it, copy your data off:
+
+```bash
+ssh root@192.168.1.42 'tar -cf - -C /data pedalboard' > openrig-backup.tar
+```
+
+The backup includes your TONE3000 sign-in: keep it private.

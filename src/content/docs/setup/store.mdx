@@ -1,0 +1,76 @@
+---
+title: Plugin store
+description: Install free LV2 plugins on the pedalboard in one tap.
+---
+
+import Shot from '../../../components/Shot.astro';
+import list from '../../../assets/shots/store-list.png';
+import search from '../../../assets/shots/store-search.png';
+import detail from '../../../assets/shots/store-detail.png';
+import installed from '../../../assets/shots/store-installed.png';
+
+The store installs [LV2 plugins](../lv2/) built for your pedalboard and checked to load in
+OpenRig. Every plugin in it is free software: its license and source are shown on its page.
+
+:::note[OpenRig 0.4.0 and later]
+The store came with OpenRig 0.4.0. Without a **STORE** tab on the Add effect page, update first:
+see [Updates](../updates/). **Settings** → **Updates** shows the version installed.
+:::
+
+<Shot src={list} alt="The store: a search field, family filters with their counts, and plugin cards with a picture, the author, a one-line description, the license and a download button" caption="The store lists every plugin of the catalog, with its family, license and author." />
+
+## Installing a plugin
+
+1. In the rack, tap **+** at the top right, then **STORE** on the Add effect page.
+2. Search by name or sound, or pick a family (Distortion, Delay, Reverb…).
+3. Open a plugin and tap **Install**. The download takes a few seconds on Wi-Fi.
+4. Tap **Add to the chain**: no restart needed.
+
+<Shot src={search} alt="The store filtered by the search ZAM: 3 of 15 plugins, ZamComp, ZamDelay and ZamGate, with Dynamics and Delay filters" caption="A search narrows the list and the family filters to what matches." />
+
+A plugin's page gives its family, its number of controls, the download size, and where it comes
+from: **OPENRIG BUILD** means the catalog built it from the author's source, whose address is
+shown.
+
+<Shot src={detail} alt="The AmpVTS page: an amp picture, the GPL-3.0-or-later and OPENRIG BUILD tags, a description, the family, 11 controls, a 12.3 MB download, the source address and an Install button" caption="A plugin's page, before installing." />
+
+<Shot src={installed} alt="The AmpVTS page once installed: an INSTALLED tag, and the Add to the chain and Remove buttons" caption="Once installed: add it to the chain, or remove it." />
+
+The pedalboard needs a network to read the catalog and download plugins. The catalog is read
+when you open the store, at most every few hours; the refresh button at the top reads it again.
+Installed plugins work offline.
+
+## Updating and removing
+
+When the catalog has a newer version of an installed plugin, its card says **UPDATE** and its
+page offers **Update**. **Remove** deletes the plugin from the pedalboard.
+
+Removing a plugin does not break your presets: a block already in the rack keeps playing until
+you load another preset, and presets using the plugin keep its settings. Install it again and they
+come back.
+
+## Plugins you add yourself
+
+The store is optional. Bundles you copy into `/data/pedalboard/lv2` (see [LV2 plugins](../lv2/))
+are always loaded, and the store never changes or removes them: in the store, they show as
+**INSTALLED BY HAND** or **ON BOARD**. After copying a bundle, tap the store's refresh button to
+see it without restarting.
+
+## Safety and privacy
+
+- The catalog is signed: the pedalboard accepts only a catalog signed with the OpenRig catalog
+  key, never an older one than it already has, and stops installing from a catalog that has
+  expired.
+- Each download is checked against the size and checksum the catalog gives before it is
+  unpacked, and a plugin can only write inside its own folder.
+- No account and no tracking: the pedalboard downloads the catalog and the plugins from
+  [GitHub](https://github.com/Siryu6/openrig-catalog) and sends nothing about you.
+
+A plugin shows as unavailable when it has no build for your board yet, or needs a host feature
+OpenRig does not provide yet.
+
+## Suggesting a plugin
+
+The catalog lives in [openrig-catalog](https://github.com/Siryu6/openrig-catalog). Open an issue
+there to suggest a free LV2 plugin; plugins without a published binary are built from their
+source by the catalog itself.

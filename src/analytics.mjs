@@ -1,12 +1,24 @@
-// Umami analytics, shared by the landing page layout and the Starlight docs.
-// Cookieless; counted on openrig.eu only; skipped with Do Not Track or Global
-// Privacy Control. Event names are listed in the README.
+// Umami analytics of the docs, loaded in the Starlight head. Cookieless;
+// counted on docs.openrig.eu only; skipped with Do Not Track or Global Privacy
+// Control. Event names are listed in the README.
+
+/** Placeholder: setting UMAMI_WEBSITE_ID to it builds the site without a tracker */
+const UMAMI_PLACEHOLDER = 'docs-website-id-not-set';
+
+/** Umami website id of docs.openrig.eu (not openrig.eu's: that one stays with the rigs site) */
+const DOCS_WEBSITE_ID = 'd6be4cd7-2560-4f20-b463-4c4a290de649';
+
+/**
+ * Umami website id, overridable with UMAMI_WEBSITE_ID when the site is built
+ * (the deploy workflow passes the repository variable of that name, if set)
+ */
+export const UMAMI_WEBSITE_ID = process.env.UMAMI_WEBSITE_ID || DOCS_WEBSITE_ID;
 
 /** Attributes of the Umami tracker script */
 export const umamiScript = {
 	src: 'https://stats.siryu.me/script.js',
-	'data-website-id': 'fa9bf012-2401-4451-9d2d-08922a9f8063',
-	'data-domains': 'openrig.eu',
+	'data-website-id': UMAMI_WEBSITE_ID,
+	'data-domains': 'docs.openrig.eu',
 	'data-do-not-track': 'true',
 	'data-performance': 'true',
 	'data-before-send': 'openrigBeforeSend',
@@ -43,7 +55,7 @@ export const umamiInline = `(() => {
 		const url = new URL(link.href, location.href);
 		// A search result: the page it leads to, never the query
 		if (link.closest('#starlight__search')) return track('search-result', { target: url.pathname });
-		if (url.href.startsWith('https://github.com/Siryu6/openrig-site/edit/')) return track('edit-page', { page: page() });
+		if (url.href.startsWith('https://github.com/Siryu6/openrig-doc/edit/')) return track('edit-page', { page: page() });
 		if (url.host === location.host || !url.protocol.startsWith('http')) return;
 		if (url.host === 'github.com' && /^\\/Siryu6\\/OpenRig\\/releases/i.test(url.pathname))
 			return track('download', { location: 'docs', page: page() });
@@ -60,3 +72,13 @@ export const umamiInline = `(() => {
 		});
 	});
 })();`;
+
+/** Starlight head entries: the inline script and the tracker, or nothing without a website id */
+export const umamiHead =
+	UMAMI_WEBSITE_ID === UMAMI_PLACEHOLDER
+		? []
+		: [
+				{ tag: 'script', content: umamiInline },
+				{ tag: 'script', attrs: { ...umamiScript, defer: true } },
+			];
+if (UMAMI_WEBSITE_ID === UMAMI_PLACEHOLDER) console.warn('[analytics] UMAMI_WEBSITE_ID is the placeholder: no Umami tracker');

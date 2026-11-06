@@ -1,49 +1,47 @@
 ---
-import SiteLayout from '../components/SiteLayout.astro';
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
 ---
 
-<SiteLayout
-	title="Privacy — OpenRig"
-	description="Cookieless usage stats with self-hosted Umami: what is counted and how to opt out."
+<StarlightPage
+	frontmatter={{
+		title: 'Privacy',
+		description: 'Cookieless usage stats with self-hosted Umami: what is counted and how to opt out.',
+		pagefind: false,
+		editUrl: false,
+	}}
 >
-	<section>
-		<div class="wrap privacy">
-			<div class="section-head">
-				<span class="kicker">Privacy</span>
-				<h2>Usage stats, nothing personal</h2>
-				<p>
-					This site counts its visits with a self-hosted <a href="https://umami.is">Umami</a>. No cookies,
-					no personal data, no ads, nothing shared with anyone. Just enough to know which pages are read.
-				</p>
-			</div>
+	<p>
+		This documentation counts its visits with a self-hosted <a href="https://umami.is">Umami</a>. No cookies,
+		no personal data, no ads, nothing shared with anyone. Just enough to know which pages are read.
+		The rigs site at <a href="https://openrig.eu">openrig.eu</a> has its own
+		<a href="https://openrig.eu/privacy">privacy page</a>.
+	</p>
 
-			<h3>What is counted</h3>
-			<ul class="ticks">
-				<li>Pages viewed and the site you came from</li>
-				<li>Browser, system, device type, screen size, language and country</li>
-				<li>Page load times</li>
-				<li>Clicks on the main buttons and links, video plays, code copies and search use</li>
-			</ul>
+	<h2>What is counted</h2>
+	<ul>
+		<li>Pages viewed and the site you came from</li>
+		<li>Browser, system, device type, screen size, language and country</li>
+		<li>Page load times</li>
+		<li>Clicks on links, video plays, code copies and search use</li>
+	</ul>
 
-			<h3>What is not</h3>
-			<ul class="ticks">
-				<li>No cookies, nothing stored on your device</li>
-				<li>No IP addresses kept, no tracking across sites</li>
-				<li>What you type in the search box is never sent</li>
-			</ul>
+	<h2>What is not</h2>
+	<ul>
+		<li>No cookies, nothing stored on your device</li>
+		<li>No IP addresses kept, no tracking across sites</li>
+		<li>What you type in the search box is never sent</li>
+	</ul>
 
-			<h3>Opting out</h3>
-			<p>
-				Nothing is counted when your browser sends Do Not Track or Global Privacy Control. You can also
-				turn it off for this site in this browser:
-			</p>
-			<p class="opt">
-				<button class="btn btn-ghost" type="button" id="umami-opt" hidden></button>
-				<span class="muted small" id="umami-state"></span>
-			</p>
-		</div>
-	</section>
-</SiteLayout>
+	<h2>Opting out</h2>
+	<p>
+		Nothing is counted when your browser sends Do Not Track or Global Privacy Control. You can also turn it
+		off for this site in this browser:
+	</p>
+	<p class="opt">
+		<button type="button" id="umami-opt" hidden></button>
+		<span id="umami-state"></span>
+	</p>
+</StarlightPage>
 
 <script>
 	// Umami skips every send while localStorage has umami.disabled
@@ -64,23 +62,27 @@ import SiteLayout from '../components/SiteLayout.astro';
 </script>
 
 <style>
-	.privacy {
-		max-width: 760px;
-	}
-	.privacy h3 {
-		margin: 40px 0 14px;
-	}
-	.privacy p,
-	.privacy li {
-		color: var(--muted);
-	}
-	.privacy a {
-		text-decoration: underline;
-	}
 	.opt {
 		display: flex;
-		gap: 16px;
+		flex-wrap: wrap;
+		gap: 1rem;
 		align-items: center;
-		margin-top: 16px;
+	}
+	.opt button {
+		font: inherit;
+		font-size: var(--sl-text-sm);
+		padding: 0.5rem 1rem;
+		border: 1px solid var(--sl-color-gray-4);
+		border-radius: 999px;
+		background: transparent;
+		color: var(--sl-color-white);
+		cursor: pointer;
+	}
+	.opt button:hover {
+		border-color: var(--sl-color-accent);
+	}
+	.opt span {
+		font-size: var(--sl-text-sm);
+		color: var(--sl-color-gray-3);
 	}
 </style>

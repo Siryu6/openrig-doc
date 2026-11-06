@@ -1,0 +1,82 @@
+---
+title: Settings
+description: Hardware, inputs and outputs, audio and system, processing cores, display, MIDI, Wi-Fi, TONE3000 Connect and updates.
+---
+
+import Shot from '../../../components/Shot.astro';
+import hw from '../../../assets/shots/settings-hw.png';
+import s2 from '../../../assets/shots/settings-2.png';
+import light from '../../../assets/shots/light-theme.png';
+import sys from '../../../assets/shots/settings-system.png';
+
+Open **⋮** → **Settings**. Changes apply at once; there is nothing to save.
+
+<Shot src={hw} alt="Settings: Hardware with 4 footswitches and tap tempo on FS 4, Inputs and outputs with 4 inputs and 4 outputs and a Routing button, then Audio & system with the interface, sample rate, buffer, periods, screen rotation and Wi-Fi country" caption="Hardware, inputs and outputs, and Audio & system, at the top of Settings." />
+
+| Card | What it sets | More |
+|---|---|---|
+| **Hardware** | How many footswitches are wired and their GPIO, tap tempo on the last one, the rotary encoder | [Footswitches and encoder](../footswitches/) |
+| **Inputs and outputs** | How many the interface has; **Routing** opens the page that says what each one does | [Inputs and outputs](../routing/) |
+| **Audio & system** | The audio interface, sample rate, buffer, screen rotation and Wi-Fi country of `pedalboard.txt` | [Below](#audio--system) |
+| **Processing** | How many cores the effects may use: Auto, or 1 up to the number of cores | [Below](#processing) |
+| **Display** | Light theme | [Below](#light-theme) |
+| **MIDI** | Devices found, channel, follow MIDI clock | [MIDI](../../using/midi/) |
+| **Wi-Fi** | Scan, join, disconnect, forget a network; turn the radio on or off; the pedalboard's IP address | Below |
+| **TONE3000 Connect** | Link your TONE3000 account | [TONE3000](../../using/tone3000/#linking-your-account) |
+| **Updates** | The installed version, check for and install updates | [Updates](../updates/) |
+
+<Shot src={s2} alt="Settings further down: Wi-Fi, TONE3000 Connect signed in, Updates with OpenRig 0.10.0, and the OpenRig card" caption="Further down: Wi-Fi, TONE3000 Connect and Updates." />
+
+## Light theme
+
+The screen is dark by default, which reads best on a dark stage. Turn **Light theme** on in
+**Display** for daylight: the pages get light panels and dark text, while the blocks of the rack,
+the knobs, the faders and the footswitches keep their dark look. The choice is kept across
+restarts.
+
+<Shot src={light} alt="The rack with the light theme: light background and top bar, dark rack blocks" caption="The rack with the light theme." />
+
+## Wi-Fi
+
+Tap a network to join it, and type its password on the on-screen keyboard (**#+=** for
+symbols). Joined networks are remembered on the data partition; **Forget** removes one. The
+password is never shown or logged.
+
+Ethernet needs no setting: plug the cable in.
+
+The card also shows the pedalboard's **IP address** on each connected network, Wi-Fi and
+Ethernet, for instance `192.168.1.42 (Wi-Fi)`: the address to use for [SSH](../../help/ssh/).
+
+Set your country in [pedalboard.txt](../pedalboard-txt/) (`wifi_country`) to use the channels
+allowed there.
+
+## Audio & system
+
+The settings that used to need a computer are on the screen too. **Audio & system** changes
+[pedalboard.txt](../pedalboard-txt/), the file on the card's first partition, without taking the
+card out:
+
+<Shot src={sys} alt="Settings: Audio & system with Interface Auto, Sample rate 48 kHz, Buffer 128 frames, Periods 2, Screen rotation 0° and Wi-Fi country Default, then Processing with DSP cores on Auto (4)" caption="Audio & system, and the DSP cores in Processing." />
+
+| Setting | Choices |
+|---|---|
+| **Interface** | Auto (the first USB interface or sound HAT), or one of the sound cards plugged in, by name |
+| **Sample rate** | 44.1, 48, 88.2 or 96 kHz. Keep 48 kHz for neural captures |
+| **Buffer** | 16 to 1024 frames per period |
+| **Periods** | 2, 3 or 4 |
+| **Screen rotation** | 0°, 90°, 180° or 270° |
+| **Wi-Fi country** | Default, or a country, for the channels allowed there |
+
+The card shows the latency of the buffer as you step through the values. Nothing changes until
+you tap **Apply** (**Cancel** goes back): the audio settings restart the audio for a moment, a
+new rotation turns the screen at once, and the Wi-Fi country applies at the next restart. The
+file keeps your comments, and a wrong value can still be fixed from a computer.
+
+The card shows on the OpenRig OS only; the desktop app has no `pedalboard.txt`.
+
+## Processing
+
+**DSP cores** sets how many processor cores the effects may use. On **Auto**, the default, a
+heavy rig is spread over all of them: the four Cortex-A76 cores of a Pi 5, with no added latency
+and the same sound as on one core. Light rigs stay on one core anyway. See
+[Multi-core DSP](../performance/#multi-core-dsp).
