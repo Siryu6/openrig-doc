@@ -72,7 +72,12 @@ openrig.eu, now served by the rigs site, so its history goes on there.
 
 | Event | Properties | When |
 |---|---|---|
-| `download` | `location`, `page` | Link to the GitHub releases or to openrig.eu/download |
+| `download-page` | `target: github-releases\|openrig-download`, `location`, `page` | Link to the GitHub releases or to openrig.eu/download (not a download yet) |
+| `download-os-rpi5`, `download-os-x86_64` | `version`, `location`, `page` | Link to a system image of a release |
+| `download-linux-x86_64`, `download-linux-aarch64` | `version`, `location`, `page` | Link to a desktop Linux tarball |
+| `download-bundle` | `version`, `platform`, `kind: system\|app`, `location`, `page` | Link to an update bundle (`.raucb`) |
+| `download-checksum` | `version`, `target` (`os-rpi5`, `linux-x86_64`…), `location`, `page` | Link to a SHA-256 file |
+| `download-rig` | `rig`, `source: docs`, `location`, `page` | Link to a rig file on openrig.eu |
 | `outbound` | `host`, `url`, `page` | Any other link to another site |
 | `edit-page` | `page` | "Edit page" link in the docs |
 | `video-play` | `name`, `page` | First play of a docs recording |
@@ -81,7 +86,8 @@ openrig.eu, now served by the rigs site, so its history goes on there.
 | `search-result` | `target` | Search result chosen: the page it leads to |
 
 Links are tracked by the inline script in `src/analytics.mjs` (links to openrig.eu and GitHub
-count as `outbound`); a link can also take a `data-umami-event` attribute of its own.
+count as `outbound`); a link can also take a `data-umami-event` attribute of its own. Each kind of
+download has its own event name, the same as on openrig.eu, because Umami lists events by name.
 
 TONE3000 is a trademark of TONE3000; OpenRig is an independent project that uses the TONE3000
 API. The site content is licensed under the GPL-3.0-or-later, like OpenRig.
