@@ -26,7 +26,7 @@ or hold to go back.
 
 ## Looper
 
-<Shot src={looper} alt="The looper playing, 4.5 seconds into a 7 second loop, one layer" caption="The looper, playing a 7 second loop." />
+<Shot src={looper} alt="The looper playing bar 2 of a 3 bar loop at 120 BPM, one layer, with Count-in and Quantize on" caption="The looper, playing a 3 bar loop with count-in and quantize on." />
 
 The looper records what comes out of the effects, in stereo, up to 30 seconds. It plays on the
 main mix only, not on the [sends](../../setup/routing/#send-and-return-blocks).
@@ -39,7 +39,25 @@ main mix only, not on the [sends](../../setup/routing/#send-and-return-blocks).
 | **Undo** | Removes the last layer |
 | **Clear** | Erases the loop |
 
-The slider sets the loop's volume. The looper can also be driven over MIDI (CC60 to CC63, see
+The slider sets the loop's volume.
+
+### Tempo, count-in and quantize
+
+The bottom row sets the looper's tempo and bar:
+
+- **BPM**: 40 to 240. It follows the [MIDI clock](../midi/) when one is received, and is locked
+  then.
+- **Bar**: 2 to 12 beats, shown as a time signature (3/4, 4/4…). 6, 9 and 12 beats are 6/8,
+  9/8 and 12/8: the tempo then counts eighth notes.
+- **Count-in**: **Record** first plays one bar of clicks, the downbeat higher, and recording
+  starts on the next downbeat. The state shows **COUNT-IN** and the beat. **Record**, **Play**
+  or **Stop** during the count-in cancels it.
+- **Quantize**: ending the loop carries on to the end of the bar, so the loop is a whole
+  number of bars. Ending it just after a bar line (within an eighth of a beat, 100 ms at most)
+  ends it on that bar line instead. Overdubs keep the loop's length.
+- **Click**: the volume of the click, by 10 %. It is heard on the main mix and never recorded.
+
+These settings are kept with the session. The looper can also be driven over MIDI (CC60 to CC63, see
 [MIDI](../midi/)).
 
 With a [rotary encoder](../../setup/footswitches/#the-encoder), turn to go through the buttons
