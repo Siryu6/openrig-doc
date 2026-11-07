@@ -111,18 +111,27 @@ service to install it; RAUC checks the signature.
 ```
 src/
 ├── audio/        JACK callback, chain switcher, DSP worker pool, tuner, looper, output routing
-├── plugins/      lilv host, LV2 features, NAM, impulse responses, small DSP blocks,
+├── plugins/      lilv host, LV2 features and worker, NAM, impulse responses, small DSP blocks,
 │                 view inference and models (view_infer, eq_curve, dynamics, scope)
 ├── state/        AppState: chain, presets, scenes, setlists, session
 ├── presets/      Preset and setlist storage
+├── rigs/         .openrig rigs: export, import, and the openrig.eu client (online)
+├── store/        Plugin store: signed index, downloads, safe unpacking
 ├── tone3000/     TONE3000 account, library, pictures
+├── ui/           Chain layout, view models, text editing, encoder focus
 ├── midi.rs       MIDI parsing, the Helix-style map, clock
+├── gpio.rs, hardware.rs, i2c_encoders.rs
+│                 Footswitches, encoders and I2C encoder boards: what is wired, polling
+├── wifi.rs       Wi-Fi through NetworkManager
 ├── update.rs     Release check, download, request to the OS updater
+├── monitor.rs    DSP meter, xruns, CPU, RAM, temperature
 ├── plugin_view.rs, block_sound.rs, eq_ui.rs, dynamics_ui.rs, scope_ui.rs
 │                 Plugin views: shared drawing, the sound of the block shown, each view
-└── …_ui.rs       Glue between each Settings card or page and the UI
-├── bin/          pedalboard-splash (boot logo), pedalboard-bench (multi-core timing)
+├── …_ui.rs       Glue between each Settings card or page and the UI
+└── bin/          pedalboard-splash (boot logo), pedalboard-bench (multi-core timing)
+crates/openrig-rig  The .openrig format, a crate of its own so other tools can read rigs
 ui/               Slint UI: pages, components, theme
 native/           C wrapper around NeuralAudio
+third_party/      NeuralAudio (NAM Core + RTNeural), patched Slint KMS backend
 os/               Buildroot tree: boards, packages, init scripts, RAUC
 ```
