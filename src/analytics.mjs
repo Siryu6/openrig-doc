@@ -57,7 +57,10 @@ export const umamiInline = `(() => {
 		if (link.closest('#starlight__search')) return track('search-result', { target: url.pathname });
 		if (url.href.startsWith('https://github.com/Siryu6/openrig-doc/edit/')) return track('edit-page', { page: page() });
 		if (url.host === location.host || !url.protocol.startsWith('http')) return;
-		if (url.host === 'github.com' && /^\\/Siryu6\\/OpenRig\\/releases/i.test(url.pathname))
+		if (
+			(url.host === 'github.com' && /^\\/Siryu6\\/OpenRig\\/releases/i.test(url.pathname)) ||
+			(url.host === 'openrig.eu' && /^\\/download\\/?$/.test(url.pathname))
+		)
 			return track('download', { location: 'docs', page: page() });
 		track('outbound', { host: url.host, url: url.origin + url.pathname, page: page() });
 	});
