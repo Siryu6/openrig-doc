@@ -32,6 +32,18 @@ Any MIDI foot controller works too, with nothing to wire: see [MIDI](../../using
 
 Wire the other leg of each switch, and the encoder's common pin, to a ground pin.
 
+:::caution[With an audio HAT]
+Do not wire switches to the GPIOs an audio HAT uses. 2-channel I2S HATs take GPIO 18 to 21.
+8-channel HATs (HiFiBerry DAC8x, RaspiAudio 8x8) take GPIO 18 to 27, and GPIO 5 to detect their
+inputs: they overlap footswitches 2 to 4 and encoder A of the default wiring. Pick other GPIOs
+in **Settings** → **Hardware**: with an 8-channel HAT, GPIO 4, 6, 12, 13, 16 and 17 stay free
+(7 to 11 too when SPI is off).
+
+OpenRig asks the kernel which GPIOs a driver holds and leaves those inputs out, rather than
+cutting the HAT off its pins. **Settings** → **Hardware** says which, for instance
+*FS 2: GPIO 27 is used by the audio HAT (I2S), left out*.
+:::
+
 ## Settings → Hardware
 
 **Settings** → **Hardware** sets what is wired:

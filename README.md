@@ -16,12 +16,15 @@ npm run build     # static site in dist/
 | `src/content/docs/` | Documentation, served at the root (`index.mdx` is the landing page) |
 | `src/pages/privacy.astro` | Privacy page (`/privacy/`) |
 | `src/links.mjs` | Links back to openrig.eu and GitHub, in the header and footer |
-| `src/assets/shots/` | Screenshots of the pedalboard (2048 × 1200) |
+| `src/assets/shots/` | Screenshots of the pedalboard (2048 wide, 1200 high for a full screen) |
 | `public/media/` | Screen recordings (MP4 and WebM, with a poster) |
 | `src/styles/` | Documentation theme, dark and light |
 | `REDIRECTS.md` | Old `openrig.eu/docs/…` addresses and the Caddy redirects to here |
 
-Screenshots come from the x86_64 OS image running in QEMU.
+Screenshots come from the x86_64 OS image running in QEMU, or from a release build of the app on
+the same virtual display as the recordings below, at 1024×600 scaled by 2
+(`SLINT_SCALE_FACTOR=2`, the fonts of `scripts/record/lib/fonts.conf`). The `rigs-online-*`
+shots use a local copy of the openrig.eu site, seen by the app under its real name.
 Captures shown in them belong to their creators on TONE3000, who are credited in the captions.
 
 The `hero` (tour of the screen, also on the openrig.eu home page), `live` and `tone3000`
@@ -69,7 +72,7 @@ openrig.eu, now served by the rigs site, so its history goes on there.
 
 | Event | Properties | When |
 |---|---|---|
-| `download` | `location`, `page` | Link to the GitHub releases |
+| `download` | `location`, `page` | Link to the GitHub releases or to openrig.eu/download |
 | `outbound` | `host`, `url`, `page` | Any other link to another site |
 | `edit-page` | `page` | "Edit page" link in the docs |
 | `video-play` | `name`, `page` | First play of a docs recording |

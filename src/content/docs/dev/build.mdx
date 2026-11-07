@@ -41,11 +41,11 @@ Without JACK, the UI starts with audio disabled.
 
 | Build | Command |
 |---|---|
-| Default: LV2, NAM, TONE3000, MIDI, desktop window | `cargo build --release` |
+| Default: desktop window, LV2, NAM, TONE3000, MIDI, updates, plugin store, openrig.eu rigs | `cargo build --release` |
 | With footswitches and encoder on a Pi | `cargo build --release --features gpio` |
 | Without NAM or TONE3000 (no CMake or C++) | `cargo build --no-default-features --features winit,lv2,midi` |
 | Full screen without X11 / Wayland | `cargo build --release --features kms` |
-| As in the Pi image | `cargo build --release --no-default-features --features kms,lv2,nam,tone3000,midi,gpio,splash,update` |
+| As in the Pi image | `cargo build --release --no-default-features --features kms,lv2,nam,tone3000,midi,gpio,splash,update,store,rigs-online` |
 | Tests | `cargo test` |
 
 The NAM code is always compiled optimized, even in debug builds: otherwise the models cannot keep
@@ -59,6 +59,8 @@ up in real time.
 | `LV2_PATH` | system | Where LV2 bundles are searched |
 | `PEDALBOARD_NO_AUTOCONNECT` | unset | Do not connect the JACK ports |
 | `PEDALBOARD_TONE3000_CLIENT_ID` | unset | Signs in through another TONE3000 application (its publishable key) |
+| `OPENRIG_CATALOG_URL` | the official catalog | Another plugin store catalog, signed by a trusted key |
+| `OPENRIG_RIGS_URL` | `https://openrig.eu` | Another rig site (a test or self-hosted server) |
 | `RUST_LOG` | `info` | Log level |
 
 ## The OS image
