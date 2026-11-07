@@ -5,7 +5,7 @@
 // deploy workflow rebuilds the site on a schedule to pick new ones up.
 
 // Used when GitHub cannot be reached (offline build)
-const FALLBACK = '0.3.0';
+const FALLBACK = '0.11.0';
 
 async function fetchLatest() {
 	const headers = { Accept: 'application/vnd.github+json' };
