@@ -35,13 +35,16 @@ defconfig (see [Build from source](../../dev/build/)).
 - Tempo: ports marked as BPM get the preset's tempo, and plugins following the host transport
   get it as a `time:Position` event.
 - MIDI: plugins with a MIDI input get the notes and free CCs (see [MIDI](../../using/midi/#midi-to-plugins)).
-- Host features: URID map and unmap, options, bounded block length, `isLive`.
+- Host features: URID map and unmap, options, bounded block length, `isLive`, and the worker
+  extension (`work:schedule`), for plugins that do heavy work outside the audio thread.
+- Files: file parameters (`patch:writable` with an `atom:Path` range) are shown in the editor to
+  pick a file, and factory presets that set files load them.
 
 Plugins that require another host feature are skipped when the pedalboard starts, rather than
-loaded half-working. Not provided yet: the worker extension and plugin state, which rules out
-plugins that load files themselves (LV2 NAM, AIDA-X or IR loaders: use the built-in
-[Amp, Pedal and Cabinet blocks](../../using/neural-blocks/) instead) and some plugins that keep
-an internal state, such as the Dragonfly Hall, Room and Plate reverbs.
+loaded half-working. Not provided yet: plugin state (the `state` extension), so a plugin that
+keeps settings outside its parameters starts from its defaults with each preset. For neural
+amp models and impulse responses, the built-in
+[Amp, Pedal and Cabinet blocks](../../using/neural-blocks/) remain the simplest choice.
 
 ## Plugins worth trying
 
@@ -49,8 +52,8 @@ Collections whose plugins load with the features above: [ZAM](https://www.zamaud
 the [DPF plugins](https://github.com/DISTRHO/DPF-Plugins), the Guitarix
 [GxPlugins](https://github.com/brummer10/GxPlugins.lv2), [CAPS](http://quitte.de/dsp/caps.html),
 [x42](https://x42-plugins.com) (fil4, dpl, tuna, fat1), [Calf](https://calf-studio-gear.org) built
-without its UI, [LSP](https://lsp-plug.in), Airwindows, TAP and MDA. The Dragonfly Early Reflections
-plugin loads; its other reverbs do not yet.
+without its UI, [LSP](https://lsp-plug.in), Airwindows, TAP and MDA, and the
+[Dragonfly](https://michaelwillis.github.io/dragonfly-reverb/) reverbs.
 
 On desktop Linux, the app finds the plugins installed on the system, for instance
 `sudo apt install x42-plugins zam-plugins`.
