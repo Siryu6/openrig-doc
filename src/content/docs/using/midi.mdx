@@ -1,6 +1,6 @@
 ---
 title: MIDI
-description: Control presets, scenes and switches from a MIDI controller, learn any knob.
+description: Control presets, scenes and switches from a MIDI controller or a computer on the network, learn any knob.
 ---
 
 OpenRig listens to every MIDI input it finds: USB controllers, the DIN input of an audio
@@ -70,8 +70,46 @@ always heard.
 LV2 plugins with a MIDI input, such as synths, get the notes, pitch bend, pressure and the CCs
 that are not in the map. Program changes stay with the presets.
 
+## Network MIDI
+
+On the OpenRig OS, a computer on the same network can play the pedal without a cable, over
+RTP-MIDI (AppleMIDI), the protocol of macOS's Network MIDI. **Settings** → **MIDI** →
+**Network MIDI** switches it on (it is off by default) and names the session: the pedal's host
+name (`pedalboard`) unless you set one, up to 32 letters, digits, spaces, dots, dashes or
+underscores.
+
+Once on, the pedal announces itself over Bonjour and listens on UDP 5004 and 5005. On the
+computer:
+
+- **macOS**: Audio MIDI Setup → Window → Show MIDI Studio → Network (the globe). Select the pedal
+  in **Directory**, then **Connect**. The session is then a MIDI port in Logic, Ableton,
+  MainStage…
+- **Windows**: install [rtpMIDI](https://www.tobias-erichsen.de/software/rtpmidi.html), add a
+  session, pick the pedal in **Directory** and **Connect**. The session is a MIDI port for Reaper,
+  Cubase…
+- **Linux**: [rtpmidid](https://github.com/davidmoreno/rtpmidid) shows the pedal as an ALSA MIDI
+  port; send to it from Reaper (or `aconnect`) and the session opens. Without Bonjour:
+  `rtpmidid-cli connect pedalboard <pedal's IP address> 5004`.
+
+The first time a computer connects, the pedal asks on its screen: **Allow *name* (*address*) to
+control OpenRig?** Until you answer, its MIDI is ignored. **Allow** and **Block** are remembered
+(by session name and address) and listed in the card, where **Remove** forgets a device. To skip
+the question, choose **Allow anyone on the network**; blocked devices stay blocked.
+
+Everything above applies to a network session as to a cable: the map, the learned controls, the
+channel, the clock and the plugins. The card shows the name announced, the computers connected
+and the devices allowed or blocked. The pedal sends nothing back to the network.
+
+:::caution[Security]
+RTP-MIDI has no password. Only devices on the local network (private and link-local addresses)
+are ever listened to, and new ones are asked about, but on the same network a device can pretend
+to be one you allowed. On a network you do not trust (a venue's Wi-Fi), leave network MIDI off
+or use a network of your own. When it is off, nothing listens.
+:::
+
 ## Not yet
 
-MIDI output (sending program changes to other gear, MIDI thru) is not supported yet. The
+MIDI output (sending program changes to other gear, MIDI thru, over the network too) is not
+supported yet. The
 looper's play once (CC62), reverse (CC65), half speed (CC66) and looper block on / off (CC67)
 are reserved, as on Helix, but do nothing yet: a block cannot learn them.
