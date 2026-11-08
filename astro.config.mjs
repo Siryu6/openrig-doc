@@ -66,6 +66,7 @@ export default defineConfig({
 						{ label: 'Footswitches and encoder', slug: 'setup/footswitches' },
 						{ label: 'LV2 plugins', slug: 'setup/lv2' },
 						{ label: 'Plugin store', slug: 'setup/store' },
+						{ label: 'Remote control', slug: 'setup/remote' },
 						{ label: 'pedalboard.txt', slug: 'setup/pedalboard-txt' },
 						{ label: 'Performance', slug: 'setup/performance' },
 					],

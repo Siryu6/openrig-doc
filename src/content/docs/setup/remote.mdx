@@ -1,0 +1,94 @@
+---
+title: Remote control
+description: Use your phone or tablet as the pedalboard's screen, with or without a touchscreen.
+---
+
+import Shot from '../../../components/Shot.astro';
+import editor from '../../../assets/shots/remote-editor.png';
+import live from '../../../assets/shots/remote-live.png';
+
+Use your phone or tablet as the pedalboard's screen: open its address in a web browser, sign in,
+and play. Nothing to install. A pedalboard built without a touchscreen uses it as its only
+screen; one with a touchscreen gets a second one, in your hand.
+
+The browser has two modes:
+
+- **Editor**: the pedalboard's own screens (rack, presets, store, settings…), on your tablet or
+  phone turned sideways. Tap, drag, scroll and type as on the touchscreen.
+- **Live**: a portrait page for the stage: presets and scenes, setlist slots, tap tempo, the
+  tuner, the meters, and every block with its bypass and its controls.
+
+<Shot src={editor} alt="A tablet showing the pedalboard's presets screen in the browser" caption="Editor: the pedalboard's own screens, on a tablet." />
+
+<Shot src={live} alt="A phone showing the Live page: preset, scenes, tap tempo, tuner and the blocks with their controls" caption="Live: the stage page, on a phone." />
+
+The remote control is off until you choose a password.
+
+## Turn it on
+
+### With a touchscreen
+
+**Settings** → **Remote control**: turn it on and choose a password (8 to 63 characters). The
+card shows the addresses to open, how many devices are connected, and the hotspot. **Change
+password** and **Sign out all devices** are there too.
+
+### Without a screen
+
+Before starting the pedalboard, put the card in a computer and edit
+[`pedalboard.txt`](../pedalboard-txt/):
+
+```ini
+remote_password=choose-8-to-63-characters
+
+# Optional: a Wi-Fi network to join
+wifi_ssid=Home
+wifi_password=its-key
+```
+
+At the next start, the pedalboard keeps them and replaces them in the file with `(saved)`: the
+card holds no password afterwards. Write a new value to change one, or `remote_password=off` to
+turn the remote control off.
+
+Then, on your phone or tablet, either:
+
+- join the pedalboard's Wi-Fi, **OpenRig-XXXX** (its key is the remote control password), and
+  open **http://10.42.0.1**;
+- or, on your own network, open `http://` and the pedalboard's address (your router lists it
+  as `pedalboard`).
+
+## Without a touchscreen
+
+With a remote control password and no touchscreen (no display, or a monitor without touch),
+the pedalboard's screens are for your phone or tablet, and a connected monitor keeps the
+OpenRig logo. `display` in `pedalboard.txt` chooses by hand:
+
+| `display` | |
+|---|---|
+| `auto` (default) | The touchscreen if there is one, else your phone or tablet (with a password set) |
+| `screen` | Always the touchscreen |
+| `remote` | Always your phone or tablet |
+
+## The pedalboard's hotspot
+
+When there is no network to share, the pedalboard brings its own: **OpenRig-XXXX**, protected by
+the remote control password. `remote_hotspot` in `pedalboard.txt`, or the buttons in
+**Settings** → **Remote control**:
+
+| `remote_hotspot` | |
+|---|---|
+| `auto` (default) | Started when the pedalboard has no network 45 s after starting |
+| `on` | Always (the pedalboard does not join another Wi-Fi then) |
+| `off` | Never |
+
+The hotspot reaches only the pedalboard, not the Internet. Some mini PCs have Wi-Fi cards that
+cannot make a hotspot: the pedalboard says so, and the remote control still works over your
+network.
+
+## Safety
+
+- Only devices on your local network can connect, and only with the password. Wrong passwords
+  slow down after three tries.
+- **Sign out all devices** (or a new password) disconnects everyone at once; so does a restart.
+- On someone else's Wi-Fi (a venue, a hotel), other people on that network can see what the
+  pedalboard and your phone exchange. Use the pedalboard's hotspot, or a network you trust.
+- Anyone with the password controls the whole pedalboard. Sharing the hotspot shares the control.
