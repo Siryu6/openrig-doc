@@ -1,6 +1,6 @@
 ---
 title: pedalboard.txt
-description: Audio interface, buffer, screen rotation and Wi-Fi country, set from the screen or from any computer.
+description: Audio interface, buffer, screen, Wi-Fi and remote control, set from the screen or from any computer.
 ---
 
 The first partition of the card (or disk) is a small FAT partition named `PEDALBOARD`, readable
@@ -34,10 +34,16 @@ wifi_country=
 | `sample_rate` | `48000` | In Hz. Keep 48 kHz for neural captures |
 | `period`, `periods` | `128`, `2` | The audio buffer. 128 × 2 at 48 kHz adds about 5 ms each way; 256 if you hear clicks |
 | `display_rotation` | `0` | 0, 90, 180 or 270 |
+| `display` | `auto` | Where the screens are: `auto`, `screen` or `remote` (see [Remote control](../remote/#without-a-touchscreen)) |
 | `wifi_country` | empty | Two letters (`FR`, `US`…) |
+| `remote_password` | empty (off) | The [remote control](../remote/) password, 8 to 63 characters, also the hotspot's key; `off` turns it off |
+| `remote_hotspot` | `auto` | The pedalboard's own Wi-Fi: `auto`, `on` or `off` |
+| `wifi_ssid`, `wifi_password` | empty | A Wi-Fi network to join, without a screen |
 
 After editing it from a computer, restart. Keys are lowercase and values plain (letters, digits, `_ . : , -`):
-anything else is ignored and the default is used.
+anything else is ignored and the default is used. The passwords and the Wi-Fi name may hold any
+character: they are read once, at the next start, then replaced with `(saved)`, so the card
+holds no secret.
 
 ## Other files on that partition
 
