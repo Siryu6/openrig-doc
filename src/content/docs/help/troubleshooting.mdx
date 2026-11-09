@@ -30,7 +30,7 @@ or `display_rotation` to 90, 180 or 270 in [pedalboard.txt](../../setup/pedalboa
 
 1. Check that the **IN** meter moves when you play. If it does not, the guitar is not reaching
    the pedalboard: check the cable and the interface's input gain.
-2. In **Settings → Audio & system**, step **Interface** through the sound cards the system sees
+2. In **Settings → Audio & system**, tap **Interface** to list the sound cards the system sees
    and pick yours. Over [SSH](../ssh/), `cat /proc/asound/cards` lists them too: `audio_device` in
    `pedalboard.txt` takes the name in brackets.
 3. `tail -f /var/log/messages` shows why the audio server does not start.
@@ -90,6 +90,6 @@ processor. The log says why it was skipped: `grep -i lv2 /var/log/messages`. See
 
 ## Still stuck
 
-[Open an issue](https://github.com/Siryu6/OpenRig/issues) with the version (Settings → Updates),
+[Open an issue](https://github.com/Siryu6/OpenRig/issues) with the version (⋮ → Updates),
 your board and interface, and the output of `pedalboard-report` (see
 [SSH and logs](../ssh/#logs-and-version)).

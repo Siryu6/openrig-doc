@@ -3,6 +3,9 @@ title: Footswitches and encoder
 description: Wire footswitches, a rotary encoder and knob encoders to the Raspberry Pi.
 ---
 
+import Shot from '../../../components/Shot.astro';
+import hw from '../../../assets/shots/settings-hw.png';
+
 On a Raspberry Pi, up to 8 footswitches and a rotary encoder can be wired straight to the GPIO
 header. No extra board, no resistor: each input is wired between its GPIO and ground, and the
 Pi's internal pull-ups do the rest.
@@ -36,17 +39,20 @@ Wire the other leg of each switch, and the encoder's common pin, to a ground pin
 Do not wire switches to the GPIOs an audio HAT uses. 2-channel I2S HATs take GPIO 18 to 21.
 8-channel HATs (HiFiBerry DAC8x, RaspiAudio 8x8) take GPIO 18 to 27, and GPIO 5 to detect their
 inputs: they overlap footswitches 2 to 4 and encoder A of the default wiring. Pick other GPIOs
-in **Settings** → **Hardware**: with an 8-channel HAT, GPIO 4, 6, 12, 13, 16 and 17 stay free
-(7 to 11 too when SPI is off).
+on the [Hardware page](#settings--hardware): with an 8-channel HAT, GPIO 4, 6, 12, 13, 16 and
+17 stay free (7 to 11 too when SPI is off).
 
 OpenRig asks the kernel which GPIOs a driver holds and leaves those inputs out, rather than
-cutting the HAT off its pins. **Settings** → **Hardware** says which, for instance
+cutting the HAT off its pins. The Hardware page says which, for instance
 *FS 2: GPIO 27 is used by the audio HAT (I2S), left out*.
 :::
 
 ## Settings → Hardware
 
-**Settings** → **Hardware** sets what is wired:
+**⋮** → **Settings** → **Hardware**, the last card of Settings, opens the Hardware page. It sets
+what is wired:
+
+<Shot src={hw} alt="The Hardware page: 4 footswitches on GPIO 17, 27, 22 and 23, each with a LED, and Tap tempo on FS 4 turned on" caption="The Hardware page: four footswitches, the last one tapping the tempo." />
 
 - **Footswitches**: from none to 8, and the GPIO of each. A LED next to each one lights while it is
   pressed, to check the wiring.
@@ -55,7 +61,11 @@ cutting the HAT off its pins. **Settings** → **Hardware** says which, for inst
 - **Encoder**: its A and B GPIOs, its push button or none, and its steps per detent. Lower the
   steps if it takes several clicks to move.
 
-Changes apply at once and are kept on the data partition.
+Changes apply at once and are kept on the data partition. **‹ Settings** at the top left, or a
+hold on the encoder, goes back to Settings.
+
+Without GPIO (the desktop app, a mini PC), the card reads **Footswitches and tap tempo**: it still
+sets how many footswitches the keys `1` to `8` play, and the tap tempo.
 
 ## What they do
 
@@ -75,13 +85,15 @@ adjust a value. On a USB keyboard, the arrows turn, `Return` presses and `Escape
 | [Add effect](../../using/rack/#adding-a-block) | Go through the list | Add the block | Back to the rack |
 | [Presets](../../using/presets/) | Pick a preset | Load it | Page switcher |
 | [Live](../../using/live/#with-the-encoder) | The switches, then the tempo, tap and the mode | Act like the footswitch, or adjust the tempo | Page switcher |
-| [Looper](../../using/tuner-looper/#looper) | Record, Overdub, Play, Stop, Undo, Clear and the level | Trigger it, or adjust the level | Page switcher |
+| [Looper](../../using/tuner-looper/#looper) | Record, Overdub, Play, Stop, Undo, Clear, Loop ×2, ½ Speed, Loops, then the tempo, TAP, the bar, Count-in, Quantize, Click, the click level and the level | Trigger it, or adjust a value | Page switcher |
 | [Tuner](../../using/tuner-looper/#tuner) | Mute and the reference pitch | Toggle mute, or adjust the pitch | Page switcher |
+| [Settings](../settings/) | Every control, card by card from the top | What a tap does, or adjust a value | Page switcher |
+| [Hardware](#settings--hardware) | The footswitches, tap tempo and knob encoders | What a tap does, or adjust a value | Back to Settings |
 
 ### Adjusting a value
 
-A block's control, the tempo, the looper's level and the tuner's reference pitch work the same
-way:
+A block's control, the tempo, the looper's values, the tuner's reference pitch and the steppers
+and segments of Settings work the same way:
 
 1. Press to start adjusting.
 2. Turn to change the value.
@@ -94,8 +106,34 @@ A switch flips at once on a press.
 Holding on a main page opens the page switcher: Rack, Presets, Live, Tuner, Looper and Settings.
 Turn to pick a page, press to open it. Tapping a page works too.
 
-Hold also goes back one level elsewhere: it closes the power dialog, leaves the store and the
-setlists.
+Hold also goes back one level elsewhere: it closes the **⋮** menu, the power and update dialogs and
+the on-screen keyboard, leaves the store, the setlists and the Routing page. While a dialog is
+open, the encoder never acts on the page behind it.
+
+### Settings with the encoder
+
+Since OpenRig 0.14.0 the encoder reaches every control of [Settings](../settings/) and of the
+Hardware page, card by card from the top:
+
+- A **press** does what a tap does: flips a switch, taps a button, opens **Hardware ›**.
+- A **stepper** (sample rate, buffer, DSP cores…) or a **segmented** control (screen rotation, the
+  hotspot): press, turn to change it, press again to stop.
+- A **list** (Interface, Wi-Fi country): press to open it, turn to move, press to pick, hold to
+  close it.
+- **Audio & system**: after a change, turn on to **Cancel** or **Apply**.
+- **Wi-Fi**: **Scan**, the switch, then the networks. A press on a saved network shows
+  **Connect** or **Disconnect** and **Forget**, which the next turns reach (hold closes them); on
+  a new secured network it opens the password keyboard.
+- **Network MIDI**: **Allow** and **Block** of each computer connected, **Remove** of each device
+  listed.
+- **TONE3000 Connect**: **Disconnect** stops first on **Cancel**, then on the **Disconnect** that
+  confirms.
+- A text field (a password, the session name) opens the on-screen keyboard: type on the screen or
+  a USB keyboard; a hold cancels it.
+
+On the Hardware page the encoder skips its own settings (on / off, A and B pins, push button and
+its GPIO, steps per detent): changed with the encoder, they would apply at once and cut it off.
+Set them by touch.
 
 ## Knob encoders (I2C)
 
@@ -118,6 +156,6 @@ bus on.
 | 1 to 5, presets or model | Open the list, then move through it | Open the list, then pick | Close the list |
 | 6 | The strip's pages | | |
 
-**Settings** → **Hardware** sets the board, the counts per detent and the direction, and says
-which addresses answered. Without boards, the keys `a s d f g h` turn encoders 1 to 6 (with
-Shift, the other way) and `z x c v b n` press them (with Shift, hold), on the rack page.
+The [Hardware page](#settings--hardware) sets the board, the counts per detent and the direction,
+and says which addresses answered. Without boards, the keys `a s d f g h` turn encoders 1 to 6
+(with Shift, the other way) and `z x c v b n` press them (with Shift, hold), on the rack page.

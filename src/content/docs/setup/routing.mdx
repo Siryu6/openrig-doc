@@ -4,6 +4,7 @@ description: Use every input and output of the interface, with Send and Return b
 ---
 
 import Shot from '../../../components/Shot.astro';
+import page from '../../../assets/shots/routing.png';
 import outputs from '../../../assets/shots/routing-outputs.png';
 import blocks from '../../../assets/shots/routing-blocks.png';
 import rack from '../../../assets/shots/rack-io.png';
@@ -17,9 +18,17 @@ the **Routing** page says what each one does:
 - feed a second instrument (a bass DI, a synth) into the chain;
 - send a different mix to the in-ear monitors.
 
-Open it from **⋮** → **Settings** → **Inputs and outputs** → **Routing**. Changes are heard at once
-and kept; there is nothing to save. On a 480-pixel-high screen, scroll down to see the sends and
-returns of the preset.
+Open it from **⋮** → **Routing**. A line at the top sums it up, for instance *2 inputs and 4
+outputs. Effects on input 1, main mix on outputs 1, 2.* Changes are heard at once and kept; there
+is nothing to save. On a 480-pixel-high screen, scroll down to see the sends and returns of the
+preset. The back button at the top left, or a hold on the encoder, goes back to the page you
+opened it from.
+
+<Shot src={page} alt="The Routing page opened from the rack: the summary 2 inputs and 4 outputs, effects on input 1, main mix on outputs 1, 2; the Inputs card with Input 1 as effects input and its meters; the Outputs card with Out 1-2 on Main mix, Out 3 on Input 2 and Out 4 off" caption="⋮ → Routing: the summary line, then the inputs and outputs." />
+
+:::note[Before OpenRig 0.14.0]
+The page was in **Settings** → **Inputs and outputs** → **Routing**.
+:::
 
 ## Inputs
 
