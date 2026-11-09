@@ -11,6 +11,14 @@ Use your phone or tablet as the pedalboard's screen: open its address in a web b
 and play. Nothing to install. A pedalboard built without a touchscreen uses it as its only
 screen; one with a touchscreen gets a second one, in your hand.
 
+:::tip[What you need]
+- A Raspberry Pi 5 or a PC running OpenRig (see [What you need](../../getting-started/hardware/)).
+- A USB class-compliant audio interface.
+- A phone or tablet with a web browser.
+
+No touchscreen and no monitor needed: the phone or tablet is the screen.
+:::
+
 The browser has two modes:
 
 - **Editor**: the pedalboard's own screens (rack, presets, store, settings…), on your tablet or
@@ -21,6 +29,9 @@ The browser has two modes:
 <Shot src={editor} alt="A tablet showing the pedalboard's presets screen in the browser" caption="Editor: the pedalboard's own screens, on a tablet." />
 
 <Shot src={live} alt="A phone showing the Live page: preset, scenes, tap tempo, tuner and the blocks with their controls" caption="Live: the stage page, on a phone." />
+
+On Android, an iPad or a computer, the button at the right of the tabs puts the page in
+[full screen](#full-screen).
 
 The remote control is off until you choose a password.
 
@@ -83,6 +94,20 @@ the remote control password. `remote_hotspot` in `pedalboard.txt`, or the button
 The hotspot reaches only the pedalboard, not the Internet. Some mini PCs have Wi-Fi cards that
 cannot make a hotspot: the pedalboard says so, and the remote control still works over your
 network.
+
+## Full screen
+
+The button at the right of the tabs puts the page in full screen, without the address bar and
+the system bars, and back. It works on Android, on iPad and in desktop browsers. iPhone Safari
+cannot show a page in full screen, so the button is not there. Added to the home screen, the page
+opens in full screen by itself.
+
+## Smooth frames
+
+The Editor is streamed at up to about 30 frames per second, and only the parts of the screen that
+change are sent. After a tap, a drag or a key, the frame that shows its effect is sent as soon as
+the pedalboard has drawn it, without waiting for the next frame. Knobs, footswitches and rack
+blocks are drawn flat in the browser, without their gradient.
 
 ## Safety
 
