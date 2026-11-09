@@ -74,10 +74,16 @@ that are not in the map. Program changes stay with the presets.
 ## Network MIDI
 
 On the OpenRig OS, a computer on the same network can play the pedal without a cable, over
-RTP-MIDI (AppleMIDI), the protocol of macOS's Network MIDI. **Settings** → **MIDI** →
-**Network MIDI** switches it on (it is off by default) and names the session: the pedal's host
-name (`pedalboard`) unless you set one, up to 32 letters, digits, spaces, dots, dashes or
-underscores.
+RTP-MIDI (AppleMIDI), the protocol of macOS's Network MIDI. **Settings** → **Network MIDI**,
+the card after **MIDI**, switches it on (it is off by default) and names the session: the
+pedal's host name (`pedalboard`) unless you set one, up to 32 letters, digits, spaces, dots,
+dashes or underscores.
+
+:::note[OpenRig 0.14.0 and later]
+Network MIDI works on the OpenRig OS from 0.14.0. The 0.13.0 image was released without the
+service behind it (rtpmidid), so switching it on there had no effect.
+[Update](../../setup/updates/) to 0.14.0 or later.
+:::
 
 Once on, the pedal announces itself over Bonjour and listens on UDP 5004 and 5005. On the
 computer:
