@@ -1,11 +1,12 @@
 ---
 title: Tuner and looper
-description: A tuner down to 38 Hz, and a stereo looper after the effects.
+description: A tuner down to 38 Hz, and a stereo looper after the effects, with a click, multiply, half speed and saved loops.
 ---
 
 import Shot from '../../../components/Shot.astro';
 import tuner from '../../../assets/shots/tuner.png';
 import looper from '../../../assets/shots/looper.png';
+import loops from '../../../assets/shots/looper-loops.png';
 
 ## Tuner
 
@@ -26,7 +27,7 @@ or hold to go back.
 
 ## Looper
 
-<Shot src={looper} alt="The looper playing bar 2 of a 3 bar loop at 120 BPM, one layer, with Count-in and Quantize on" caption="The looper, playing a 3 bar loop with count-in and quantize on." />
+<Shot src={looper} alt="The looper playing bar 3 of a 4 bar loop at 100 BPM, one layer: the bar number large, the beat LEDs, the time, and the waveform with a line on each bar and the playhead; below, the transport, Undo, Clear, Loop ×2, ½ Speed, Loops, the tempo with TAP, the bar, Count-in, Quantize, Click and its level, and the volume" caption="Playing bar 3 of a 4 bar loop: the waveform shows the bars and where the loop is." />
 
 The looper records what comes out of the effects, in stereo, up to 30 seconds. It plays on the
 main mix only, not on the [sends](../../setup/routing/#send-and-return-blocks).
@@ -38,28 +39,81 @@ main mix only, not on the [sends](../../setup/routing/#send-and-return-blocks).
 | **Play** / **Stop** | Plays or stops the loop |
 | **Undo** | Removes the last layer |
 | **Clear** | Erases the loop |
+| **Loop ×2** | Doubles the loop: it plays twice, and later overdubs span the whole longer loop. Press again for ×4, as long as it fits in 30 seconds |
+| **½ Speed** | Plays the loop at half speed, an octave down. Press again for full speed |
+| **Loops** | Saves the loop, or loads one saved before: see [Saved loops](#saved-loops) |
 
 The slider sets the loop's volume.
 
-### Tempo, count-in and quantize
+### What the screen shows
 
-The bottom row sets the looper's tempo and bar:
+The top of the page shows the state (**RECORDING**, **PLAYING**, **COUNT-IN**…), the number of
+bars and layers, and where the loop is:
 
-- **BPM**: 40 to 240. It follows the [MIDI clock](../midi/) when one is received, and is locked
-  then.
+- the **bar** being played, large, out of the bars of the loop (**3 / 4**), with a LED per beat
+  and the time in small type. A loop that is not on the bar grid (recorded without quantize)
+  shows the time large instead;
+- the **waveform** of the loop, with a line on each bar and the playhead moving over it. It fills
+  in as you record, and an overdub shows as you play it.
+
+### Tempo, click, count-in and quantize
+
+The bottom rows set the looper's tempo and bar:
+
+- **BPM**: 40 to 240. **TAP** taps it (it counts when touched, not on release). It is the same
+  tempo as the [Live page](../live/), the tap footswitch and MIDI CC64. It follows the
+  [MIDI clock](../midi/) when one is received, and is locked then.
 - **Bar**: 2 to 12 beats, shown as a time signature (3/4, 4/4…). 6, 9 and 12 beats are 6/8,
   9/8 and 12/8: the tempo then counts eighth notes.
 - **Count-in**: **Record** first plays one bar of clicks, the downbeat higher, and recording
-  starts on the next downbeat. The state shows **COUNT-IN** and the beat. **Record**, **Play**
-  or **Stop** during the count-in cancels it.
+  starts on the next downbeat. **Overdub** pressed while the loop is stopped counts in too.
+  The page shows **COUNT-IN** and the beat. Any transport button during the count-in cancels
+  it, and **Undo** does nothing then. There is no count-in before **Play**: the loop is its own
+  guide.
 - **Quantize**: ending the loop carries on to the end of the bar, so the loop is a whole
   number of bars. Ending it just after a bar line (within an eighth of a beat, 100 ms at most)
   ends it on that bar line instead. Overdubs keep the loop's length.
-- **Click**: the volume of the click, by 10 %. It is heard on the main mix and never recorded.
+- **Click**: a metronome while recording, playing and overdubbing, the first beat of each bar
+  accented. With the click on, the loop is always a whole number of bars.
+- **Click** *n* **%**: the volume of the click (and of the count-in), by 10 %. It is heard on
+  the main mix and never recorded.
 
-These settings are kept with the session. The looper can also be driven over MIDI (CC60 to CC63, see
-[MIDI](../midi/)).
+These settings are kept with the session.
 
-With a [rotary encoder](../../setup/footswitches/#the-encoder), turn to go through the buttons
-and press to trigger one. On the volume, press, turn to change it by 5 % per click, then press to
-keep it or hold to go back.
+### Half speed
+
+**½ Speed** plays the loop at half speed, and so an octave lower, as on a Helix or a Ditto X4:
+for a bass line under a riff, or to work out a fast lick. There is no speed change without a
+change of pitch. An overdub always records at full speed: starting one brings the loop back to
+full speed.
+
+### Saved loops
+
+<Shot src={loops} alt="The Loops list: Save loop at the top, then four saved loops with their bars, tempo, bar and length, each with Load and a bin" caption="The Loops list: save the loop, load or delete one." />
+
+**Loops** opens the list of saved loops:
+
+- **Save loop** saves the loop as it sounds, all layers mixed, under a name typed on the
+  on-screen keyboard (the date and time when left empty). Finish an overdub before saving.
+- **Load** replaces the loop with a saved one, stopped and ready to play, on its bars. A loop
+  saved at another sample rate is converted. A file longer than the looper's 30 seconds is
+  refused, with its length.
+- The bin deletes one, after a confirmation. To rename a loop, save it again under the new name
+  and delete the old one.
+
+Loops are standard WAV files (32-bit float, stereo), with a small file next to each for its name,
+bars, tempo and time signature. They are in the `loops` folder of the data directory:
+`/data/pedalboard/loops` on the pedalboard (see [SSH and logs](../../help/ssh/#files)),
+`~/.local/share/pedalboard/loops` with the desktop app on Linux. A WAV file copied there is
+listed too, as a loop of free length.
+
+### MIDI and encoder
+
+The looper can be driven over MIDI: CC60 to CC63 for the transport and undo, CC66 for half speed
+(0–63 full speed, 64–127 half speed). See [MIDI](../midi/).
+
+With a [rotary encoder](../../setup/footswitches/#the-encoder), turn to go through Record,
+Overdub, Play, Stop, Undo, Clear, Loop ×2, ½ Speed and Loops, then the tempo, TAP, the bar,
+Count-in, Quantize, Click, the click level and the volume. Press to trigger a button. On a
+value, press, turn to change it (the volume by 5 % per click), then press to keep it or hold to
+go back.
