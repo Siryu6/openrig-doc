@@ -1,32 +1,52 @@
 ---
 title: Settings
-description: Hardware, inputs and outputs, audio and system, processing cores, display, MIDI, Wi-Fi, TONE3000 Connect and updates.
+description: Wi-Fi, audio and system, display, MIDI, network MIDI, remote control, TONE3000 Connect, processing cores and the hardware wired to the pedal.
 ---
 
 import Shot from '../../../components/Shot.astro';
-import hw from '../../../assets/shots/settings-hw.png';
+import top from '../../../assets/shots/settings-system.png';
 import s2 from '../../../assets/shots/settings-2.png';
 import light from '../../../assets/shots/light-theme.png';
-import sys from '../../../assets/shots/settings-system.png';
+import picker from '../../../assets/shots/settings-picker.png';
+import menu from '../../../assets/shots/menu.png';
 
 Open **⋮** → **Settings**. Changes apply at once; there is nothing to save.
 
-<Shot src={hw} alt="Settings: Hardware with 4 footswitches and tap tempo on FS 4, Inputs and outputs with 4 inputs and 4 outputs and a Routing button, then Audio & system with the interface, sample rate, buffer, periods, screen rotation and Wi-Fi country" caption="Hardware, inputs and outputs, and Audio & system, at the top of Settings." />
+The **⋮** menu at the top right holds, from top to bottom:
+
+| Item | |
+|---|---|
+| **TONE3000** | The TONE3000 library, once your account is [linked](../../using/tone3000/#linking-your-account) |
+| **Routing** | What each input and output of the interface does: [Inputs and outputs](../routing/) |
+| **Updates** | The version installed, and the updates: [Updates](../updates/). A dot shows on **⋮** and next to **Updates** when an update is ready to install or waits for a restart |
+| **Settings** | This page |
+| **Power off** | Switches the pedalboard off, or restarts it. Outside the OpenRig OS, **Quit OpenRig** instead |
+
+<Shot src={menu} alt="The ⋮ menu open over the rack: TONE3000, Routing, Updates with an orange dot, Settings and Power off; the ⋮ button has an orange dot too" caption="The ⋮ menu. The dot says an update is ready." />
+
+The cards of Settings come in the order you need them: what you set up anywhere new first, what
+you set once last.
 
 | Card | What it sets | More |
 |---|---|---|
-| **Hardware** | How many footswitches are wired and their GPIO, tap tempo on the last one, the rotary encoder | [Footswitches and encoder](../footswitches/) |
-| **Inputs and outputs** | How many the interface has; **Routing** opens the page that says what each one does | [Inputs and outputs](../routing/) |
+| **Wi-Fi** | Scan, join, disconnect, forget a network; turn the radio on or off; the pedalboard's IP address | [Below](#wi-fi) |
 | **Audio & system** | The audio interface, sample rate, buffer, screen rotation and Wi-Fi country of `pedalboard.txt` | [Below](#audio--system) |
-| **Processing** | How many cores the effects may use: Auto, or 1 up to the number of cores | [Below](#processing) |
 | **Display** | Light theme | [Below](#light-theme) |
 | **MIDI** | Devices found, channel, follow MIDI clock | [MIDI](../../using/midi/) |
 | **Network MIDI** | MIDI from a computer over the network (RTP-MIDI): on / off, session name, devices allowed or blocked | [Network MIDI](../../using/midi/#network-midi) |
-| **Wi-Fi** | Scan, join, disconnect, forget a network; turn the radio on or off; the pedalboard's IP address | Below |
+| **Remote control** | Your phone or tablet as the pedalboard's screen: on / off, password, hotspot | [Remote control](../remote/) |
 | **TONE3000 Connect** | Link your TONE3000 account | [TONE3000](../../using/tone3000/#linking-your-account) |
-| **Updates** | The installed version, check for and install updates | [Updates](../updates/) |
+| **Processing** | How many cores the effects may use: Auto, or 1 up to the number of cores | [Below](#processing) |
+| **Hardware ›** | Opens the Hardware page: footswitches and their GPIO, tap tempo on the last one, the rotary encoder, knob encoders | [Footswitches and encoder](../footswitches/#settings--hardware) |
 
-<Shot src={s2} alt="Settings further down: Wi-Fi, TONE3000 Connect signed in, Updates with OpenRig 0.10.0, and the OpenRig card" caption="Further down: Wi-Fi, TONE3000 Connect and Updates." />
+<Shot src={s2} alt="The whole Settings page: Wi-Fi, Audio & system, Display, MIDI, Network MIDI with a MacBook Pro connected, Remote control on, TONE3000 Connect signed in, Processing with DSP cores on Auto (4), and the Hardware entry" caption="The whole Settings page, from Wi-Fi to Hardware." />
+
+The inputs and outputs and the updates used to be cards of Settings; since OpenRig 0.14.0 they
+are in the **⋮** menu, as **Routing** and **Updates**.
+
+With a [rotary encoder](../footswitches/#the-encoder), every control of Settings and of the
+Hardware page can be reached without touching the screen: see [Settings with the
+encoder](../footswitches/#settings-with-the-encoder).
 
 ## Light theme
 
@@ -48,7 +68,7 @@ Ethernet needs no setting: plug the cable in.
 The card also shows the pedalboard's **IP address** on each connected network, Wi-Fi and
 Ethernet, for instance `192.168.1.42 (Wi-Fi)`: the address to use for [SSH](../../help/ssh/).
 
-Set your country in [pedalboard.txt](../pedalboard-txt/) (`wifi_country`) to use the channels
+Set your country in **Wi-Fi country** of [Audio & system](#audio--system) to use the channels
 allowed there.
 
 ## Audio & system
@@ -57,16 +77,22 @@ The settings that used to need a computer are on the screen too. **Audio & syste
 [pedalboard.txt](../pedalboard-txt/), the file on the card's first partition, without taking the
 card out:
 
-<Shot src={sys} alt="Settings: Audio & system with Interface Auto, Sample rate 48 kHz, Buffer 128 frames, Periods 2, Screen rotation 0° and Wi-Fi country Default, then Processing with DSP cores on Auto (4)" caption="Audio & system, and the DSP cores in Processing." />
+<Shot src={top} alt="Audio & system: Interface Scarlett 2i2 USB with a ›, 48 kHz, 128 frames, 2 periods, screen rotation as 0° 90° 180° 270° segments, Wi-Fi country FR · France with a ›" caption="Audio & system: two lists, three steppers and the rotation segments." />
 
 | Setting | Choices |
 |---|---|
-| **Interface** | Auto (the first USB interface or sound HAT), or one of the sound cards plugged in, by name |
+| **Interface** | A list: Auto (the first USB interface or sound HAT), or one of the sound cards plugged in, by name |
 | **Sample rate** | 44.1, 48, 88.2 or 96 kHz. Keep 48 kHz for neural captures |
 | **Buffer** | 16 to 1024 frames per period |
 | **Periods** | 2, 3 or 4 |
-| **Screen rotation** | 0°, 90°, 180° or 270° |
-| **Wi-Fi country** | Default, or a country, for the channels allowed there |
+| **Screen rotation** | 0°, 90°, 180° or 270°, side by side |
+| **Wi-Fi country** | A list: Default, or a country, for the channels allowed there |
+
+**Interface** and **Wi-Fi country** show their value with a **›**: tap one to open the list of
+choices, with the current one checked, and tap another. An interface chosen before and now
+unplugged shows as *(not found)*. Sample rate, buffer and periods have **−** and **+**.
+
+<Shot src={picker} alt="The Wi-Fi country list open over Audio & system: DE · Germany, DK · Denmark, ES · Spain, FI · Finland, FR · France checked, GB · United Kingdom" caption="The Wi-Fi country list, the current country checked." />
 
 The card shows the latency of the buffer as you step through the values. Nothing changes until
 you tap **Apply** (**Cancel** goes back): the audio settings restart the audio for a moment, a

@@ -4,14 +4,27 @@ description: Update OpenRig from the pedalboard, safely.
 ---
 
 import Shot from '../../../components/Shot.astro';
-import updates from '../../../assets/shots/settings-updates.png';
+import updates from '../../../assets/shots/updates.png';
 
-**Settings** → **Updates** → **Check for updates** compares your version with the
+**⋮** → **Updates** opens the update dialog: the version of OpenRig (and of the system, on the
+OpenRig OS), its license, and **Check for updates**, which compares your version with the
 [latest release](https://github.com/Siryu6/OpenRig/releases). If there is a newer one, tap
-**Install**. The pedalboard needs a network for this; nothing is checked or downloaded until you
-tap the button.
+**Install**: the dialog says how large it is and whether it is an app or a system update. The
+pedalboard needs a network for this; nothing is checked or downloaded until you tap the button.
 
-<Shot src={updates} alt="Settings, Updates: OpenRig 0.2.0 is out; its update for this pedalboard is still being built" caption="Right after a release, the images take a few hours to build: the pedalboard says so and asks to check again later." />
+<Shot src={updates} alt="The update dialog: the OpenRig logo, OpenRig 0.13.0 and system 0.13.0, the license, then Updates: OpenRig 0.14.0 is available, an app update of 15 MB that runs when OpenRig restarts, with an Install button" caption="A newer version is out: an app update, a few megabytes." />
+
+When a check has found an update ready to install, or an update waits for a restart, a dot shows
+on the **⋮** button and next to **Updates** in the menu. Nothing is checked in the background: the
+dot comes after a check.
+
+**Close** (or a hold on the encoder) closes the dialog; a download or an install carries on.
+Right after a release, the update files take a few hours to build: the dialog says so and asks to
+check again later.
+
+:::note[Before OpenRig 0.14.0]
+Updates were a card of **Settings**.
+:::
 
 ## App or system
 
