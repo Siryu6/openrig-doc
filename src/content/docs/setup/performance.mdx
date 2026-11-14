@@ -22,13 +22,29 @@ Tap them to open the resource monitor.
 | Temperature | The SoC temperature, on a Pi |
 | Memory | Used and total |
 | Dropouts | Xruns since start: each one is a click |
-| Latency, Buffer | From `pedalboard.txt` |
+| Latency | From input to output, the audio buffers included. **· fx N** is what the effects add (see below) |
+| Buffer | From `pedalboard.txt` |
 | Power / clock | On a Pi: under-voltage and throttling |
 
 The banner at the top sums it up, from "All good: headroom available" to a warning.
 
 Adding a block while the load is already high shows a warning. The [block editor](../../using/editor/)
 shows how much of a CPU core each block uses.
+
+## Latency
+
+Most blocks add no latency. Some LV2 plugins do, and say so: a lookahead compressor, a pitch
+shifter, a linear-phase EQ. The output limiter adds 1 ms.
+
+OpenRig keeps such blocks in time with the rest of the chain:
+
+- The two branches of a split arrive together, so a wet/dry mix does not sound hollow.
+- A late block keeps its latency when bypassed, so switching it does not move the sound in time.
+- A [Return](../routing/) placed after it is delayed to match.
+
+Up to 100 ms per path is compensated, and a change of latency fades in without a click. The
+[block editor](../../using/editor/) shows a block's latency next to its CPU use, for example
+`50 ms latency`. Other JACK programs see the total, so a recorder can align what it records.
 
 ## Multi-core DSP
 
