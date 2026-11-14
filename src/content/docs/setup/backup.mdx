@@ -1,0 +1,84 @@
+---
+title: Backup and restore
+description: Save your presets, setlists, rigs, loops and settings in one file, and bring them back on a new card or another OpenRig.
+---
+
+import Shot from '../../../components/Shot.astro';
+import panel from '../../../assets/shots/backup.png';
+import confirm from '../../../assets/shots/backup-restore.png';
+
+A backup is one file with your presets, setlists, rigs, loops and settings. Use it before you
+write a new card, to move to another OpenRig, or to go back after a mistake.
+
+Open **⋮** → **Settings** → **Backup** (the last card).
+
+:::note[After OpenRig 0.14.3]
+Backup comes with the first release after OpenRig 0.14.3.
+:::
+
+<Shot src={panel} alt="The Backup page: on the left, Back up with the Include models and plugins switch off, a warning about one model of your own, a note that passwords, accounts and Wi-Fi keys are never saved, and the Back up to USB drive button; on the right, Restore with two backups on the USB drive, one marked FULL, a Download button for one TONE3000 model and Undo restore" caption="Back up on the left, restore on the right." />
+
+## Back up
+
+Plug in a USB drive and tap **Back up to USB drive**. The file,
+`openrig-backup-<date>-<time>.tar.gz`, goes at the top of the drive.
+
+With no USB drive, the button reads **Back up on the pedal**: the backup stays on the pedal
+(the last 3 are kept). Download it from the [remote control](#from-the-remote-control).
+
+**Include models and plugins** adds your amp and pedal models, impulse responses and LV2
+plugins. The file can then be large: the sizes show under the switch. Without them:
+
+- plugins from the [store](../store/) and models from [TONE3000](../../using/tone3000/) are
+  listed in the backup, and the pedal downloads them again after a restore;
+- models of your own and plugins you copied by hand cannot be downloaded again. The page warns
+  you when you have some: turn the switch on to keep them.
+
+:::note[Never in a backup]
+Passwords and accounts (the remote control password, your TONE3000 and openrig.eu sign-ins) and
+Wi-Fi networks are never saved. A restore leaves them as they are. On a new pedal, sign in again.
+:::
+
+## Restore
+
+The Restore list shows the backups found on USB drives (**USB**) and on the pedal (**PEDAL**).
+**FULL** marks a backup with models and plugins. Tap one: OpenRig shows what it replaces and what
+it keeps, part by part.
+
+<Shot src={confirm} alt="The restore dialog: Settings, Presets, Setlists, Rigs, Loops, Models and Plugins, each replaced, with the number of files in the backup and now, and the Restore and restart button" caption="What the restore replaces, before anything changes." />
+
+**Restore and restart** restarts OpenRig, which swaps the data before it loads anything. After
+the restart, a message says when the backup was made and what is left to download.
+
+- **Download** (on the Backup page) installs the store plugins and TONE3000 models the restored
+  presets need. It needs a network, and a linked TONE3000 account for the models.
+- **Undo restore** brings back the data you had before the last restore. Undo again to go back
+  to the restore.
+
+OpenRig checks the whole file before it changes anything: a damaged file, or one with
+something unexpected inside, is refused and nothing changes. A power cut during a restore is
+safe: the next start finishes it.
+
+Plugins are built for one kind of board. Restored on another (a Raspberry Pi backup on a mini
+PC), they are left out, and the dialog says so: download them again from the store.
+
+## From the remote control
+
+On the [remote control](../remote/), the **Status** tab has a **Backup** section:
+
+- **Download backup** saves a backup on your phone or computer. Tick **Include models and
+  plugins** for the large files.
+- **Restore** sends a backup file to the pedal. The pedal checks it, then restarts to restore it.
+
+A file sent or received this way is 512 MB at most. For larger backups, use a USB drive.
+
+:::caution[USB drives on the OpenRig image]
+The OpenRig OS image does not mount USB drives by itself yet. On the pedalboard, backups stay on
+the pedal: download them from the remote control, and send them back the same way.
+:::
+
+## On a computer
+
+The desktop app has the same page. USB drives are found where the desktop mounts them
+(`/media/<user>/` or `/run/media/<user>/` on Linux, `/Volumes/` on macOS). After a restore, the
+app starts again by itself.

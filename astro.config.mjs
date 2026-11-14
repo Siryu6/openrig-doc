@@ -63,6 +63,7 @@ export default defineConfig({
 						{ label: 'Settings', slug: 'setup/settings' },
 						{ label: 'Inputs and outputs', slug: 'setup/routing' },
 						{ label: 'Updates', slug: 'setup/updates' },
+						{ label: 'Backup and restore', slug: 'setup/backup', badge: { text: 'New', variant: 'tip' } },
 						{ label: 'Footswitches and encoder', slug: 'setup/footswitches' },
 						{ label: 'LV2 plugins', slug: 'setup/lv2' },
 						{ label: 'Plugin store', slug: 'setup/store' },

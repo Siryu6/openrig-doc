@@ -64,7 +64,9 @@ ssh root@192.168.1.42 'chown -R pedalboard:pedalboard /data/pedalboard'
 
 ### Back up
 
-Before writing a new image to the card, which erases it, copy your data off:
+The simplest way is **Settings** → **Backup**: see [Backup and restore](../../setup/backup/).
+Over SSH, you can also copy the whole data folder off before writing a new image to the card,
+which erases it:
 
 ```bash
 ssh root@192.168.1.42 'tar -cf - -C /data pedalboard' > openrig-backup.tar
