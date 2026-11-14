@@ -33,7 +33,8 @@ The **Export** card exports the chain as it is now, under the name of the curren
 - **MIDI CCs**: the MIDI controls learned by the blocks fit your own controller, so they are
   left out unless this is on.
 - **Export** writes the rig to `rigs/<name>.openrig` in the pedalboard's data folder.
-  **To USB** writes it to a USB drive too, when one is mounted.
+  **To USB** writes it to a USB drive too, when one is plugged in. **Eject**, next to it,
+  makes the drive safe to pull out.
 
 The note under the title lists what only this pedalboard has: a plugin you copied by hand, or a
 model or impulse response of your own. Those are listed in the rig by name only; it still
@@ -55,18 +56,19 @@ mounted USB drives (marked **USB**). Tap one to see what it needs, item by item:
 then saves the chain as a new preset, with the paths of this pedalboard, and loads it. Each item
 then shows **INSTALLED** or **FAILED**, and why.
 
-:::caution[USB drives on the OpenRig image]
-The OpenRig OS image does not mount USB drives by itself yet: **To USB** and the USB part of
-the list only work with the desktop app for now. On the pedalboard, copy rigs into
-`/data/pedalboard/rigs` over the network instead (see [SSH and logs](../../help/ssh/#files)):
+:::tip[USB drives]
+Plug in a USB stick formatted FAT32, exFAT or ext4: the pedal reads it at once, and the list
+shows its rigs without a refresh. Tap **Eject** before you pull it out. Pulled out without
+Eject, the files already written are safe; one being written is lost.
+:::
+
+Without a USB drive, copy rigs into `/data/pedalboard/rigs` over the network (see
+[SSH and logs](../../help/ssh/#files)):
 
 ```bash
 scp -O "Plexi Crunch.openrig" root@192.168.1.42:/data/pedalboard/rigs/
 ssh root@192.168.1.42 'chown -R pedalboard:pedalboard /data/pedalboard'
 ```
-
-and fetch the ones you export from the same folder.
-:::
 
 With the desktop app, the data folder is `~/.local/share/pedalboard` on Linux (or
 `$PEDALBOARD_DATA_DIR`), and USB drives are found where the desktop mounts them
