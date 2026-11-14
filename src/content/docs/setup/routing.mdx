@@ -8,6 +8,8 @@ import page from '../../../assets/shots/routing.png';
 import outputs from '../../../assets/shots/routing-outputs.png';
 import blocks from '../../../assets/shots/routing-blocks.png';
 import rack from '../../../assets/shots/rack-io.png';
+import eq from '../../../assets/shots/routing-eq.png';
+import limiter from '../../../assets/shots/routing-limiter.png';
 
 With a 2-in, 2-out interface there is nothing to set: the guitar goes into input 1 and outputs 1
 and 2 play the effects in stereo. An interface with more inputs and outputs gets them all, and
@@ -52,6 +54,9 @@ Each output, or pair of outputs, has a card:
 | **M** | Mute |
 | **S** | Solo: while an output is soloed, only soloed outputs play |
 | **Ø** | Flips the polarity, for a mic'd cabinet out of phase with the direct signal |
+| **EQ** | Opens the [output EQ](#output-eq-and-limiter). Lit while it is on |
+| **LIMIT** | Opens the [limiter](#output-eq-and-limiter). Lit while it is on |
+| **GR** | How much the limiter takes off, in dB |
 
 Level, mute and source changes are ramped over 10 ms, so they never click. When the tuner's
 **Mute while tuning** is on, the effects and the inputs played straight through are muted while
@@ -59,6 +64,51 @@ it is open.
 
 The outputs belong to the rig, not to a preset: changing presets never changes the levels sent
 to the front of house. They are kept in `routing.json` on the data partition.
+
+## Output EQ and limiter
+
+Each output or stereo pair has its own EQ and limiter. They fit the rig to the system it plays
+on, a PA, a pair of monitors or headphones, whatever the preset. Like the rest of the output,
+they are kept for the rig, not for a preset. Tap **EQ** or **LIMIT** on an output card to open
+them; **✕** closes the panel.
+
+### EQ
+
+<Shot src={eq} alt="The EQ of outputs 1-2: a curve with the points LC, LS, 1, 2, HS and HC, mid 2 boosted around 1.5 kHz, the high cut at 10 kHz; under it the bands Low cut, Low, Mid 1, Mid 2, High, High cut, with Low selected and its Freq and Gain knobs" caption="The output EQ: drag a point on the curve, or pick a band and turn its knobs." />
+
+Six bands, from low to high:
+
+| Band | Controls | What it does |
+|---|---|---|
+| **Low cut** | **Freq** | Removes the lows under the frequency, to clean up a boomy stage |
+| **Low** | **Freq**, **Gain** | Raises or lowers everything under the frequency |
+| **Mid 1**, **Mid 2** | **Freq**, **Gain**, **Q** | Raises or lowers a band around the frequency. A higher Q makes it narrower |
+| **High** | **Freq**, **Gain** | Raises or lowers everything above the frequency |
+| **High cut** | **Freq** | Removes the highs above the frequency, for a harsh PA or a full-range speaker |
+
+Drag a point on the curve to move its band: left and right for the frequency, up and down for
+the gain. Dragging a point turns its band and the EQ on. A double tap on a point turns its band
+on or off. **ON** turns the whole EQ on or off, and **FLAT** puts every band back to its default: flat, with both cuts off. The
+gains go from −12 to +12 dB. The EQ is off on a new output.
+
+### Limiter
+
+<Shot src={limiter} alt="The limiter of outputs 1-2: the Ceiling knob at -1.0 dB, the Release knob at 100 ms, and a gain reduction readout of -5.1 dB with its meter" caption="The limiter keeps the output under the ceiling and shows how much it takes off." />
+
+The limiter keeps every peak of the output under the **Ceiling**, so the mixer, the speaker or
+the recorder after it never clips, even with a loud preset or a big boost. It is on by default,
+at −1 dB.
+
+| Control | What it does |
+|---|---|
+| **Ceiling** | The highest level the output reaches, −12 to 0 dB. Set it a little under where the next device clips |
+| **Release** | How fast the level comes back after a peak, 10 ms to 1 s, 100 ms by default |
+
+The **GR** readout shows how much the limiter takes off. A few dB on the loudest notes is fine; if
+it takes off a lot all the time, lower the output level or the preset instead.
+
+The limiter looks 1 ms ahead to catch each peak before it plays. That delays the output by 1 ms
+while the limiter is on; an output with the limiter off is not delayed.
 
 ## Send and return blocks
 
