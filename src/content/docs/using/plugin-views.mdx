@@ -53,6 +53,8 @@ The sound is measured only for the block shown, and only while its editor is ope
   with a stronger line on the first beat of each bar.
 - A delay synced to the tempo shows "tempo sync" and no echoes: its time comes from the tempo.
   A delay whose time is at zero shows "no delay".
+- With ping-pong on, the echoes alternate between two lanes: left (**L**, top) and right
+  (**R**, bottom).
 
 ## Reverb
 
@@ -60,10 +62,11 @@ The last six seconds in and out, falling fast so each tail shows as it is, not a
 
 ## Amps, pedals and drives
 
-- **Left**: the wave going in and the wave coming out, 20 ms of each, lined up on the same
-  crossing and scaled to the same height, so the shape of the clipping shows. The block's
-  latency is allowed for. The tag gives the output level against the input.
-- **Right**: the spectrum in and out, where the harmonics the block adds show.
+- The spectrum in and out, where the harmonics the block adds show.
+- A drive plugin also shows its tone: the curve of what it does to each frequency at its current
+  settings, measured quietly on a copy of the plugin, so it shows even when you do not play. It
+  follows the knobs (the hump of the mids, the lows a tight control takes off). The caption gives
+  the peak, for example "+15 dB at 752 Hz".
 
 ## Modulation and cabinets
 
@@ -73,10 +76,12 @@ The spectrum in and out: a cabinet's tone, or the sweep of a chorus, flanger or 
 
 Plugins of the OpenRig FX suite show their view at all times, even on a short screen, and the
 OpenRig mark at the top of the editor. Their controls come in the order of the plugin's face,
-until you arrange them yourself. A mode with three choices or fewer is a row of keys when there
-is room for it: tap the one you want.
+until you arrange them yourself; the rack's knob strip starts with the controls the plugin marks
+as its main ones. A mode with three choices or fewer is always a switch: a row of keys, or keys
+stacked one above the other when the screen is narrow. Tap the one you want.
 
 **Signature** plugins of the suite go further: their controls and view sit on their own plate,
-with its colour, its knobs, its name and a green light that is on when the block is on. Each plate
+with its colour, its knobs, its name and a green light that is on when the block is on. The view
+sits in a dark window, in both themes, and a mode is a column of names, each with a light. Each plate
 is worn in its own way, and that never changes. On the web remote, plates are drawn in their
 plain colour.
