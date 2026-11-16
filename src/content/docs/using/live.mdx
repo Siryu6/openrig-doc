@@ -6,6 +6,7 @@ description: Eight switches for stomps, scenes or presets, tap tempo and tails.
 import Shot from '../../../components/Shot.astro';
 import Clip from '../../../components/Clip.astro';
 import stomp from '../../../assets/shots/live-stomp.png';
+import stompPicker from '../../../assets/shots/live-stomp-picker.png';
 import scenes from '../../../assets/shots/live-scenes.png';
 import setlist from '../../../assets/shots/live-setlist.png';
 
@@ -24,6 +25,25 @@ Setlist** and kept across restarts.
 Each switch turns a block on or off. By default switch 1 is the first block of the chain, switch
 2 the second, and so on. To choose, tap **Assign**, then a tile, then a block, or **Automatic**
 to go back to the chain order. Assignments are saved in the preset.
+
+### Plugin switches and momentary
+
+<Shot src={stompPicker} alt="Assign picker of switch 3: Momentary chosen, OR Splinter · Hold checked, with the other blocks and their switches below" caption="The picker lists each block and its switches, and sets Latching or Momentary." />
+
+A switch can also play a **switch of the plugin**, such as **Splinter · Hold** or
+**Plate · Freeze**: the picker lists them under each block. On top of the picker, choose how
+the switch plays it:
+
+- **Latching**: each press turns it on or off.
+- **Momentary**: it is on while the switch is held and off on release. Hold a glitch or a
+  freeze for as long as your foot stays down.
+
+The tile shows what the switch plays, such as **Hold · Momentary**. A momentary switch works
+from the footswitches, the tiles (on while touched), the keys `1` to `8` and MIDI. With the
+encoder, a first press holds it and the next one lets it go.
+
+Nothing stays stuck: changing the Live mode lets go of a held switch. If a scene, a preset or a
+touch changes the same control while you hold it, the release leaves the new value.
 
 ## Scenes
 
@@ -56,12 +76,14 @@ of a bar. Changing preset or scene does not reset the count.
 With footswitches wired (see [Footswitches and encoder](../../setup/footswitches/)), each one does
 what its tile does:
 
-- Switches act when **pressed**, not on release, so a change lands on the beat.
+- Switches act when **pressed**, not on release, so a change lands on the beat. Only a
+  momentary switch also acts on release.
 - With two switches or more, the **last** one taps the tempo instead. **Held** for 0.8 s, it opens
   the tuner; pressing any switch then goes back. This can be turned off in
   [Settings → Hardware](../../setup/footswitches/#settings--hardware).
 - On a USB keyboard, `1` to `8` are the switches and `t` taps the tempo.
-- On MIDI, CC49 to CC56 are switches 1 to 8.
+- On MIDI, CC49 to CC56 are switches 1 to 8. For a momentary switch, 64 to 127 is down and 0
+  to 63 is up.
 
 ## With the encoder
 
