@@ -68,6 +68,24 @@ The last six seconds in and out, falling fast so each tail shows as it is, not a
   follows the knobs (the hump of the mids, the lows a tight control takes off). The caption gives
   the peak, for example "+15 dB at 752 Hz".
 
+## Stutter, slicer and rhythmic gate
+
+A plugin of this kind can send OpenRig what it plays, and its view shows one bar of it, from
+the first beat on the left to the next bar on the right. This view shows what you hear, not what
+the knobs suggest.
+
+- Thin lines mark the four beats of the bar.
+- Each step is a bar as tall as the level it lets through: a chop pattern reads as tall and
+  short bars.
+- The live sound is grey. The slice being captured is outlined in amber, and its repeats are
+  filled in amber.
+- Where the playback speed is not normal, a line shows it: a tape stop falls to the bottom, a
+  pitched repeat steps up or down. An arrow marks a slice played backward.
+- A white line, the playhead, moves across the bar as it plays.
+- The caption gives the tempo, for example "1 bar · 120 BPM".
+
+While the audio is stopped, it shows only the beats.
+
 ## Modulation and cabinets
 
 The spectrum in and out: a cabinet's tone, or the sweep of a chorus, flanger or phaser.
