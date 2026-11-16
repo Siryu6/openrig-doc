@@ -32,8 +32,10 @@ defconfig (see [Build from source](../../dev/build/)).
 ## What is supported
 
 - Control ports: numbers, toggles, integers and lists, with their ranges and units.
-- Tempo: ports marked as BPM get the preset's tempo, and plugins following the host transport
-  get it as a `time:Position` event.
+- Tempo: ports marked as BPM get the preset's tempo.
+- Transport: plugins following the host transport get a `time:Position` event before every
+  block. It has the tempo and a running bar and beat position (4/4, always playing), so
+  plugins that lock to the bar stay on the grid.
 - MIDI: plugins with a MIDI input get the notes and free CCs (see [MIDI](../../using/midi/#midi-to-plugins)).
 - Host features: URID map and unmap, options, bounded block length, `isLive`, and the worker
   extension (`work:schedule`), for plugins that do heavy work outside the audio thread.

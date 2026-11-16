@@ -46,6 +46,11 @@ taps), or with **−** and **+**. The tempo is sent to the plugins that have a t
 those that follow the host's tempo, so delays stay in time. A [MIDI clock](../midi/#clock) can
 set it too; the Live page then shows **MIDI CLOCK**.
 
+The pedalboard also counts bars and beats in 4/4, from the moment it starts. Plugins that lock
+to the bar, such as choppers and slicers, follow that count. A tempo change keeps the count, and
+a tap lands on a beat, so the beats follow your foot. A MIDI Start goes back to the first beat
+of a bar. Changing preset or scene does not reset the count.
+
 ## Footswitches
 
 With footswitches wired (see [Footswitches and encoder](../../setup/footswitches/)), each one does
