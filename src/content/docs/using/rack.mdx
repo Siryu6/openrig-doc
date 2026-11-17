@@ -8,6 +8,7 @@ import rack from '../../../assets/shots/rack.png';
 import strip from '../../../assets/shots/strip.png';
 import stripModel from '../../../assets/shots/strip-model.png';
 import addEffect from '../../../assets/shots/add-effect.png';
+import addEffectSearch from '../../../assets/shots/add-effect-search.png';
 import splitMenu from '../../../assets/shots/split-menu.png';
 
 The rack is the main page: the guitar comes in at **IN** on the left and leaves at **OUT** on
@@ -40,6 +41,23 @@ as the rack draws it: the basic card, or the small pedal of a signature plugin.
 **STORE**, on the same page, opens the [plugin store](../../setup/store/) to install more plugins.
 
 <Shot src={addEffect} alt="The Add effect page, with categories and the Amp, Amp + Cab, Pedal, Cabinet and Space blocks" caption="Add effect: built-in blocks first, then every LV2 plugin found, by category." />
+
+### Searching
+
+The search field at the top narrows the list as you type. A line stays when it holds every word
+you typed, in its name, its maker, its family or, for a plugin of the store, its tags. Case and
+accents do not count: `echo` finds *Écho*. The **×** in the field clears it.
+
+- On the touch screen, tap the field: the on-screen keyboard opens. **Done** keeps the search,
+  **Cancel** clears it.
+- With a keyboard, or in the [web remote](../../setup/remote/), type: the letters go to
+  the search. `Backspace` erases, the arrows move through the results and `Return` adds the one
+  in focus, the first match after typing. `Escape` clears the search, then goes back to the rack.
+
+When nothing matches, the page says so and offers **SEARCH THE STORE**: the store opens with the
+same text.
+
+<Shot src={addEffectSearch} alt="The Add effect page with the search rev: 7 of 75, the Space block and the x42 convolvers" caption="Typing rev keeps the Space block and the reverbs." />
 
 ## Quick knobs
 
