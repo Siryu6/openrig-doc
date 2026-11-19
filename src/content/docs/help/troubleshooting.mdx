@@ -5,9 +5,26 @@ description: No picture, no sound, clicks, devices dropping out.
 
 ## Black screen, nothing on SSH
 
-Put the card in a computer and edit `cmdline.txt`: on the Pi, on the `SYSTEM` partition in use
-(partition 2 on a new card); on a mini PC, `EFI/BOOT/grub.cfg`. Remove `quiet loglevel=3` and add
-`console=tty1` to see the boot messages on the screen. Keep it all on one line.
+First, see the boot messages on the screen.
+
+**Raspberry Pi.** Put the card in a computer and edit `cmdline.txt` on the `SYSTEM` partition in
+use (partition 2 on a new card). Remove `quiet loglevel=3` and add `console=tty1`. Keep it all on
+one line.
+
+**Mini PC.** Press **F4** several times while the PC starts, then choose
+**Pedalboard (boot messages)**. Escape works too, but some PCs open their firmware setup with it.
+The messages stay on the screen if the start fails: take a photo of the last lines for an issue.
+
+A disk written with an image older than 0.19.0 has no such menu, even after updates: they do not
+change the boot loader. Put the disk in a computer and edit
+`EFI/BOOT/grub.cfg` on the `PEDALBOARD` partition. Replace `quiet loglevel=3` with
+`loglevel=7 earlycon=efifb keep_bootcon`, and `panic=10` with `panic=0`. The mini PC image has no
+text console, so `console=tty1` shows nothing there.
+
+**Did Linux start?** On a mini PC, the first start adds two partitions to the disk, one of them
+`data`. If the disk still has only 2 partitions after a try, the start stopped in the kernel. With
+4, the system started, and the problem is the display or the app: try SSH or the
+[remote control](../../setup/remote/).
 
 ## Wrong resolution, or no picture on a small screen
 
