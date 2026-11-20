@@ -20,7 +20,7 @@ The Raspberry Pi 5 is not concerned.
 | Screen | Recommended: a touchscreen. The UI is made for 1024 × 600 and up; a mouse works too. Without one, your phone or tablet is the screen: see [Remote control](../../setup/remote/) |
 | Storage | A micro SD card for the Pi, a USB stick or an SSD for a mini PC; 8 GB or more |
 | Power | For a Pi 5, the official 27 W (5 V, 5 A) supply |
-| Optional | Up to 8 footswitches and a rotary encoder on the GPIO, I2C encoder boards for the knob strip, MIDI controllers over USB or DIN |
+| Optional | Up to 8 footswitches and a rotary encoder on the GPIO, I2C encoder or pot boards for the knob strip, MIDI controllers over USB or DIN |
 
 ## Raspberry Pi 5
 
@@ -75,7 +75,8 @@ The x86_64 image is tested in QEMU only so far. Reports from real mini PCs are w
 
 Optional. Momentary footswitches wire between a GPIO pin and ground, with no resistor: the Pi's
 internal pull-ups are used. A rotary encoder (A, B and its push button) drives the UI like the
-arrow keys. I2C encoder boards (Adafruit, M5Stack) turn the knobs of the rack's strip. See
+arrow keys. I2C encoder boards (Adafruit, M5Stack) turn the knobs of the rack's strip, and the M5Stack 8Angle
+sets them with potentiometers. See
 [Footswitches and encoder](../../setup/footswitches/).
 
 Any MIDI controller works too, with nothing to wire: see [MIDI](../../using/midi/).

@@ -160,3 +160,30 @@ bus on.
 The [Hardware page](#settings--hardware) sets the board, the counts per detent and the direction,
 and says which addresses answered. Without boards, the keys `a s d f g h` turn encoders 1 to 6
 (with Shift, the other way) and `z x c v b n` press them (with Shift, hold), on the rack page.
+
+### M5Stack 8Angle (pots)
+
+The M5Stack 8Angle (0x43) looks like the 8Encoder, but it has 8 potentiometers, a toggle switch
+and colored LEDs. Choose **M5Stack 8Angle** as the board on the
+[Hardware page](#settings--hardware). Wire it like the other boards.
+
+| Control | What it does |
+|---|---|
+| Pots 1 to 5 | Set the knobs of the strip's page shown, from one end of their range to the other |
+| Pot 6 | Picks the strip's page: left is the first page, right the last |
+| Pots 7 and 8 | Nothing |
+| Switch | Turns the block shown on or off each time you move it |
+
+A pot takes a knob over only when it reaches the knob's value. Until then, turning it does
+nothing. So when you change page, block, preset or scene, or change a knob on the screen or by
+MIDI, nothing jumps: turn the pot through the value first, then it follows.
+
+The LEDs show where each pot is:
+
+- amber: the pot drives its knob;
+- dim white: turn the pot until it reaches the knob's value;
+- off: nothing under the pot.
+
+On a list, the pot picks the options from first to last. On a switch, the left half is off and
+the right half is on. The factory presets and model fields stay on touch. Steps per detent do
+not apply to pots. If the pots work the wrong way, turn on **Reverse**.
