@@ -27,7 +27,7 @@ or hold to go back.
 
 ## Looper
 
-<Shot src={looper} alt="The looper playing bar 3 of a 4 bar loop at 100 BPM, one layer: the bar number large, the beat LEDs, the time, and the waveform with a line on each bar and the playhead; below, the transport, Undo, Clear, Loop ×2, ½ Speed, Loops, the tempo with TAP, the bar, Count-in, Quantize, Click and its level, and the volume" caption="Playing bar 3 of a 4 bar loop: the waveform shows the bars and where the loop is." />
+<Shot src={looper} alt="The looper playing bar 3 of a 4 bar loop at 100 BPM, one layer: the bar number large, the beat LEDs, the time, and the waveform with a line on each bar and the playhead; below, the transport, Undo, Clear, Loop ×2, ½ Speed, Loops, the tempo with TAP, the time signature, Count-in, Quantize, Click and its level, and the volume" caption="Playing bar 3 of a 4 bar loop: the waveform shows the bars and where the loop is." />
 
 The looper records what comes out of the effects, in stereo, up to 30 seconds. It plays on the
 main mix only, not on the [sends](../../setup/routing/#send-and-return-blocks).
@@ -58,13 +58,14 @@ bars and layers, and where the loop is:
 
 ### Tempo, click, count-in and quantize
 
-The bottom rows set the looper's tempo and bar:
+The bottom rows set the looper's tempo and time signature:
 
 - **BPM**: 40 to 240. **TAP** taps it (it counts when touched, not on release). It is the same
   tempo as the [Live page](../live/), the tap footswitch and MIDI CC64. It follows the
   [MIDI clock](../midi/) when one is received, and is locked then.
-- **Bar**: 2 to 12 beats, shown as a time signature (3/4, 4/4…). 6, 9 and 12 beats are 6/8,
-  9/8 and 12/8: the tempo then counts eighth notes.
+- **Time signature** (the button showing **4/4**): 2 to 12 beats per bar, shown as 3/4, 4/4…
+  6, 9 and 12 beats are 6/8, 9/8 and 12/8: the tempo then counts eighth notes. It sets the
+  beats in a bar, not the length of the loop.
 - **Count-in**: **Record** first plays one bar of clicks, the downbeat higher, and recording
   starts on the next downbeat. **Overdub** pressed while the loop is stopped counts in too.
   The page shows **COUNT-IN** and the beat. Any transport button during the count-in cancels
@@ -89,7 +90,7 @@ full speed.
 
 ### Saved loops
 
-<Shot src={loops} alt="The Loops list: Save loop at the top, then four saved loops with their bars, tempo, bar and length, each with Load and a bin" caption="The Loops list: save the loop, load or delete one." />
+<Shot src={loops} alt="The Loops list: Save loop at the top, then four saved loops with their bars, tempo, time signature and length, each with Load and a bin" caption="The Loops list: save the loop, load or delete one." />
 
 **Loops** opens the list of saved loops:
 
@@ -113,7 +114,7 @@ The looper can be driven over MIDI: CC60 to CC63 for the transport and undo, CC6
 (0–63 full speed, 64–127 half speed). See [MIDI](../midi/).
 
 With a [rotary encoder](../../setup/footswitches/#the-encoder), turn to go through Record,
-Overdub, Play, Stop, Undo, Clear, Loop ×2, ½ Speed and Loops, then the tempo, TAP, the bar,
+Overdub, Play, Stop, Undo, Clear, Loop ×2, ½ Speed and Loops, then the tempo, TAP, the time signature,
 Count-in, Quantize, Click, the click level and the volume. Press to trigger a button. On a
 value, press, turn to change it (the volume by 5 % per click), then press to keep it or hold to
 go back.
