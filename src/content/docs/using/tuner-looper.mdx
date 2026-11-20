@@ -27,14 +27,14 @@ or hold to go back.
 
 ## Looper
 
-<Shot src={looper} alt="The looper playing bar 3 of a 4 bar loop at 100 BPM, one layer: the bar number large, the beat LEDs, the time, and the waveform with a line on each bar and the playhead; below, the transport, Undo, Clear, Loop ×2, ½ Speed, Loops, the tempo with TAP, the time signature, Count-in, Quantize, Click and its level, and the volume" caption="Playing bar 3 of a 4 bar loop: the waveform shows the bars and where the loop is." />
+<Shot src={looper} alt="The looper playing bar 3 of a 4 bar loop at 100 BPM, one layer: the bar number large, the beat LEDs, the time, and the waveform with a line on each bar and the playhead; below, the transport, Undo, Clear, Loop ×2, ½ Speed, Loops, the tempo with TAP, the time signature, the loop length, Count-in, Quantize, Click and its level, and the volume" caption="Playing bar 3 of a 4 bar loop: the waveform shows the bars and where the loop is." />
 
 The looper records what comes out of the effects, in stereo, up to 30 seconds. It plays on the
 main mix only, not on the [sends](../../setup/routing/#send-and-return-blocks).
 
 | Button | What it does |
 |---|---|
-| **Record** | Starts recording; pressing **Play** ends the loop and plays it |
+| **Record** | Starts recording; pressing **Play** ends the loop and plays it (with a fixed **Length**, the loop ends by itself) |
 | **Overdub** | Records a new layer over the loop |
 | **Play** / **Stop** | Plays or stops the loop |
 | **Undo** | Removes the last layer |
@@ -56,7 +56,7 @@ bars and layers, and where the loop is:
 - the **waveform** of the loop, with a line on each bar and the playhead moving over it. It fills
   in as you record, and an overdub shows as you play it.
 
-### Tempo, click, count-in and quantize
+### Tempo, length, click, count-in and quantize
 
 The bottom rows set the looper's tempo and time signature:
 
@@ -66,6 +66,16 @@ The bottom rows set the looper's tempo and time signature:
 - **Time signature** (the button showing **4/4**): 2 to 12 beats per bar, shown as 3/4, 4/4…
   6, 9 and 12 beats are 6/8, 9/8 and 12/8: the tempo then counts eighth notes. It sets the
   beats in a bar, not the length of the loop.
+- **Length** (the button showing **Free length**, or **1 bar**, **2 bars**, **4 bars**,
+  **8 bars**): with **Free length**, the loop ends when you press **Play**, **Stop** or
+  **Overdub**. With a number of bars, the recording ends by itself at the end of the last bar,
+  and the loop plays at once. The bars count from the first recorded beat: with **Count-in**,
+  from the downbeat after the count-in. The page shows **RECORDING TO BAR 4** and the bar out of
+  the length (**2 / 4**). Pressing **Stop** or **Overdub** before the end chooses what happens at
+  the end: the loop stops, or an overdub starts. **Record** starts over. A loop must fit in 30
+  seconds, so lengths too long at the tempo and time signature cannot be picked. If you then slow
+  the tempo down so far that the length no longer fits, the loop gets the longest length that
+  still fits (free when not even one bar fits). Your choice comes back when it fits again.
 - **Count-in**: **Record** first plays one bar of clicks, the downbeat higher, and recording
   starts on the next downbeat. **Overdub** pressed while the loop is stopped counts in too.
   The page shows **COUNT-IN** and the beat. Any transport button during the count-in cancels
@@ -79,7 +89,7 @@ The bottom rows set the looper's tempo and time signature:
 - **Click** *n* **%**: the volume of the click (and of the count-in), by 10 %. It is heard on
   the main mix and never recorded.
 
-These settings are kept with the session.
+These settings, the length included, are kept with the session.
 
 ### Half speed
 
@@ -115,6 +125,6 @@ The looper can be driven over MIDI: CC60 to CC63 for the transport and undo, CC6
 
 With a [rotary encoder](../../setup/footswitches/#the-encoder), turn to go through Record,
 Overdub, Play, Stop, Undo, Clear, Loop ×2, ½ Speed and Loops, then the tempo, TAP, the time signature,
-Count-in, Quantize, Click, the click level and the volume. Press to trigger a button. On a
+the length, Count-in, Quantize, Click, the click level and the volume. Press to trigger a button. On a
 value, press, turn to change it (the volume by 5 % per click), then press to keep it or hold to
 go back.
